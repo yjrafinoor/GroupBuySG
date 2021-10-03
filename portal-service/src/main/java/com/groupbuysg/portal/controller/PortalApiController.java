@@ -21,7 +21,7 @@ public class PortalApiController {
 	@Autowired
 	PortalApiService portalApiService;
 	
-	@RequestMapping("/")
+	/*@RequestMapping("/")
 	public String indexpage (@RequestBody Model model){
 		log.info("Inside indexpage method of PortalApiController");
 		List<Listing> allList=new ArrayList<Listing>();
@@ -29,6 +29,6 @@ public class PortalApiController {
 		allList.add(listing);
 		model.addAttribute("allListing",allList);
 		return "index";
-	}
+	}*/
 
 }
