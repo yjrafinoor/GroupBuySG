@@ -9,3 +9,4 @@ sleep 30
 sudo nohup java -jar listing-service-0.0.1-SNAPSHOT.jar &
 sleep 30
 sudo nohup java -jar user-service-0.0.1-SNAPSHOT.jar &
+sleep 30
