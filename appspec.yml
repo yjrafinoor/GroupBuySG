@@ -22,9 +22,9 @@ hooks:
       runas: ec2-user
   ApplicationStart:
     - location: server_start.sh
-      timeout: 900
+      timeout: 660
       runas: ec2-user
   ApplicationStop:
     - location: server_stop.sh
-      timeout: 900
+      timeout: 30
       runas: ec2-user
