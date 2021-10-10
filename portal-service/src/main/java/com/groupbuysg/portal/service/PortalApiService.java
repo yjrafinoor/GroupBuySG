@@ -1,14 +1,21 @@
 package com.groupbuysg.portal.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.groupbuysg.portal.valueobject.ResponseObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupbuysg.portal.valueobject.Listing;
 import com.groupbuysg.portal.valueobject.User;
 
@@ -28,13 +35,13 @@ public class PortalApiService {
 				, Listing.class);
 	}*/
 	
-	public User getUserList() {
+	public List<User> getUserList() {
 		log.info("Inside getUserList method of PortalApiService");
-		List<User> users = new ArrayList<User>();
-		User user =  restTemplate.getForObject("http://USER-SERVICE/users/"
-				, User.class);
-		log.info("Heee User: "+ user);
-		return user;
+
+		User[] userResponse =  restTemplate.getForObject("http://USER-SERVICE/users/"
+				, User[].class);
+		log.info(String.valueOf(userResponse.length));
+		return Arrays.asList(userResponse);
 	}
 	
 	
@@ -48,6 +55,33 @@ public class PortalApiService {
 		obj.setUser(user);
 		
 		return user;
+	}
+
+
+	public void saveUser(@RequestBody User user) {
+
+		log.info("Inside saveUser method of PortalApiService");
+		
+		String userRequest ="";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		try{
+		ObjectMapper objectMapper = new ObjectMapper();		
+		userRequest = objectMapper.writeValueAsString(user);
+		}
+		catch(Exception e){
+			log.info("fail Request: "+ userRequest);
+		}
+		HttpEntity<String> request = new HttpEntity<>(userRequest,headers);
+				
+		log.info("Request: "+ request);
+
+		restTemplate.postForObject(
+				"http://USER-SERVICE/users/create/",
+				request,
+				User.class);
+		
 	}
 	
 	
