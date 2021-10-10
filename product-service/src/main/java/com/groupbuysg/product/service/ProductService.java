@@ -31,6 +31,8 @@ public class ProductService {
 	
 	public Product itemCreate(Product product, Long userId) {
 		log.info("Inside itemCreate method of ProductService");
+		product.setStatus("OPEN");
+		
 		product.setUserId(userId);
 		productRepository.save(product);
 		

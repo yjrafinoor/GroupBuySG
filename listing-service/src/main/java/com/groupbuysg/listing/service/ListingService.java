@@ -272,7 +272,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		double amt10 = leader.getTotalAmout()*10/100;
 		double amt90 = leader.getTotalAmout()-amt10;
 		leader.setAmount10(amt10);
-		leader.setAmount10(amt90);
+		leader.setAmount90(amt90);
 		listingRepository.save(leader);
 		
 		if(adminCode==1) {
@@ -310,6 +310,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		if(adminCode==7) {
 			admin.setStatusAdmin("RELEASED REMAIND AMOUNT TO LEADER");
 			listingRepository.save(admin);
+			updateLeader(productId, 9); //leaderCode 9: ADMIN RELEASED REMIND AMOUNT
 		}
 		if(adminCode==8) {
 			admin.setStatusAdmin("COMPLETED");
@@ -374,7 +375,7 @@ log.info("Hee leader leader2: "+leader);
 			//leader.setStatusLeader("RECEIVED 90% FROM ADMIN");
 			leader.setStatusLeader("COMPLETED");
 			listingRepository.save(leader);
-			updateAdmin(productId,8);
+			updateAdmin(productId, 8);
 			
 			Product product = new Product();
 			restTemplate.postForObject("http://PRODUCT-SERVICE/products/close/" + productId
