@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf/.org">
+<head>
+    <!--Bootstrap-->
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <!--CSS-->
+    <link rel="stylesheet" href="css/style.css"/> 
+
+    <!--Bootstrap v5.1-->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+    -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    
+	<meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+	<div th:replace="fragment/navigation :: navbar"></div>
+
+<div class="container">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Navbar</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false"> Dropdown </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/user_list">User List</a> 
+						<a class="dropdown-item" href="#">Product List</a>
+					</div>
+				</li>
+				<li class="nav-item"><a class="nav-link disabled" href="#"
+					tabindex="-1" aria-disabled="true">Disabled</a></li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
+	</div>
+
+    <section id="intro">
+        <div class="jumbotron">
+          <div class="container">
+			<div class="row">
+			  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="row">
+                    <div class="col-ml-12">
+                        <h1>Hello Page 1</h1>
+                        <p class="lead">test</p>
+                        <a class='btn' href="#">aaa</a>
+                    </div>
+                </div>
+			  </div>
+			  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+				<form class="px-4 py-3">
+					<div class="form-group">
+					  <label for="exampleDropdownFormEmail1">Email address</label>
+					  <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+					</div>
+					<div class="form-group">
+					  <label for="exampleDropdownFormPassword1">Password</label>
+					  <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+					</div>
+					<div class="form-group">
+					  <div class="form-check">
+					    <input type="checkbox" class="form-check-input" id="dropdownCheck">
+					    <label class="form-check-label" for="dropdownCheck">Remember me</label>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col d-flex justify-content-end">
+						<button class="btn btn-success btn-block col-md-4" type="button" data-toggle="modal" data-target="#user-form-modal">Sign up</button>
+						<button type="submit" class="btn btn-primary">Sign in</button>
+					  </div>
+					</div>
+					
+				</form>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Forgot password?</a>
+			  </div>
+            </div>
+		  </div>
+        </div>
+	</section>
+	<section id="signup">
+	  <!-- User Form Modal -->
+	  <div class="modal fade" role="dialog" tabindex="-1" id="user-form-modal">
+	    <div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Sign up</h5>
+				<button type="button" class="close" data-dismiss="modal">
+				<span aria-hidden="true">x</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="py-1">
+				<form action="#" th:action="@{/signup}" method="post" th:object="${user}">
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label>Username</label>
+										<input class="form-control" type="text" th:field="*{userName}" placeholder="johnny.s" required>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label>Full Name</label>
+										<input class="form-control" type="text" th:field="*{fullName}" placeholder="John Smith" required>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label>Email</label>
+										<input class="form-control" type="text" th:field="*{email}" placeholder="user@example.com" required>
+									</div>
+								</div>
+							<div class="col">
+								<div class="form-group">
+									<label>Password</label>
+									<input class="form-control" type="password" th:field="*{password}" id="password" required>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label>Address</label>
+										<input class="form-control" type="text" th:field="*{address}" id="address">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label>MRT Location</label>
+										<select name="mrt" id="mrt" class="form-control" required>
+											<option selected>Choose...</option>
+											<option>Boonlay</option>
+											<option>...</option>
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label>Contact</label>
+										<input class="form-control" type="text" th:field="*{contact}" required>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label>Pay Now Name</label>
+										<input class="form-control" type="text" th:field="*{paynowName}" required>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label>Pay Now Number</label>
+										<input class="form-control" type="text" th:field="*{paynowMobile}" required>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col d-flex justify-content-end">
+							<button class="btn btn-primary" type="submit">Sign Up</button>
+						</div>
+					</div>
+				</form>
+				</div>
+			</div>
+			</div>
+		</div>
+	  </div>
+	</section>
+	<!--  <div th:replace="fragments/footer :: ${#authentication.principal.isAdmin()} ? 'footer-admin' : 'footer'">
+	 --> 
+	<div th:replace="fragments/footer :: 'footer'">
+	 &copy; 2016 The Static Templates
+	</div>
+</body>
+</html>

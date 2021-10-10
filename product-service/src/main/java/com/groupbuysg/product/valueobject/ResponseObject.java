@@ -1,7 +1,6 @@
-package com.groupbuysg.user.valueobject;
+package com.groupbuysg.product.valueobject;
 
-
-import com.groupbuysg.user.entity.User;
+import com.groupbuysg.product.entity.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseObject {
-	
-	private User user;
-	private Listing listing;
-	
 
+	private Product product;
+	private Listing listing;
+	private User user;
 }

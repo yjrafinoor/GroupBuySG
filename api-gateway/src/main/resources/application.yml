@@ -11,14 +11,26 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/users/**
+        - id: PRODUCT-SERVICE
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**    
         - id: LISTING-SERVICE
           uri: lb://LISTING-SERVICE
           predicates:
             - Path=/listings/**
+        - id: COMMENT-SERVICE
+          uri: lb://COMMENT-SERVICE
+          predicates:
+            - Path=/comments/**
         - id: PORTAL-SERVICE
           uri: lb://PORTAL-SERVICE
           predicates:
-            - Path=/**        
+            - Path=/**   
+        - id: WEB-SERVICE
+          uri: lb://WEB-SERVICE
+          predicates:
+            - Path=/**     
     
 eureka:
   client:
