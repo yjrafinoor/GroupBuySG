@@ -1,4 +1,4 @@
-package com.groupbuysg.productservice;
+package com.groupbuysg.product;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
