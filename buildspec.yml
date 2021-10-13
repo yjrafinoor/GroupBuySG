@@ -16,11 +16,7 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - service-registry/target/service-registry-0.0.1-SNAPSHOT.jar
-    - api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar
-    - portal-service/target/portal-service-0.0.1-SNAPSHOT.jar
-    - listing-service/target/listing-service-0.0.1-SNAPSHOT.jar
-    - user-service/target/user-service-0.0.1-SNAPSHOT.jar
+    - */target/*.jar
     - scripts/*.sh
     - appspec.yml 
   discard-paths: yes
