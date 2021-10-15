@@ -83,7 +83,23 @@ public class PortalApiService {
 				User.class);
 		
 	}
-	
+
+	public User logInViaGoogle(@RequestBody User user) {
+
+		// TODO : issue unable to respond to output value of this function from frontend
+		//should return valid user instance/profile of himself
+		log.info("Inside logInViaGoogle method of PortalApiService");
+
+		User[] userResponse =  restTemplate.getForObject("http://USER-SERVICE/users/"
+				, User[].class);
+		log.info(String.valueOf(userResponse.length));
+
+		for(int i = 0 ; i < userResponse.length ; ++i)
+			if(userResponse[i].getEmail().equals( user.getEmail() ) )
+				return userResponse[i];
+
+		return null;//new User();
+	}
 	
 
 }
