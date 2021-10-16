@@ -85,6 +85,7 @@ public class PortalApiService {
 				User.class);
 		
 	}
+<<<<<<< HEAD
 	
 	public User getUserById(long userId) {
 		log.info("Inside getUserById method of PortalApiService");
@@ -431,6 +432,24 @@ log.info("HEE postCommentService: "+productId + " : "+userId);
 				"http://COMMENT-SERVICE/comments/create/"+productId+"/"+userId,
 				request,
 				Comment.class);
+=======
+
+	public User logInViaGoogle(@RequestBody User user) {
+
+		// TODO : issue unable to respond to output value of this function from frontend
+		//should return valid user instance/profile of himself
+		log.info("Inside logInViaGoogle method of PortalApiService");
+
+		User[] userResponse =  restTemplate.getForObject("http://USER-SERVICE/users/"
+				, User[].class);
+		log.info(String.valueOf(userResponse.length));
+
+		for(int i = 0 ; i < userResponse.length ; ++i)
+			if(userResponse[i].getEmail().equals( user.getEmail() ) )
+				return userResponse[i];
+
+		return null;//new User();
+>>>>>>> 6fea20e7caaa3cf76f2a1a0347673ca0ae819dea
 	}
 	
 
