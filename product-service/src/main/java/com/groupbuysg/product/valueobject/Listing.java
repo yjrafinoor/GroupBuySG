@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Listing {
 	
 	@Id
-	private Long listingId;
+	private long listingId;
 	private Integer totalQuantity;
 	private Double  totalAmout;
 	private Double amount10;
@@ -32,8 +32,8 @@ public class Listing {
 	private String statusAdmin;
 	private Boolean isLeader;
 	private Boolean allJoinerPaid;
-	private Long productId;
-	private Long userId;
+	private long productId;
+	private long userId;
 	
 
 }

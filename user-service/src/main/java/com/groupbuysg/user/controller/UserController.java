@@ -39,7 +39,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/list/{id}")
-	public User getUserById(@PathVariable("id") Long UserId){
+	public User getUserById(@PathVariable("id") long UserId){
 		log.info("Inside getUserById method of UserController");
 		return userService.getUserById(UserId);
 	}
@@ -50,26 +50,26 @@ public class UserController {
 		return userService.getAdmin();
 	}
 	
-	@PutMapping("/update/{id}")
-	public User updateUser (@PathVariable("id") Long UserId, @RequestBody User user){
+	@PostMapping("/update/{id}")
+	public User updateUser (@PathVariable("id") long UserId, @RequestBody User user){
 		log.info("Inside updateUser method of UserController");
 		return userService.updateUser(UserId, user);
 	}
 	
-	@PutMapping("/requestLeader/{id}")
-	public User requestLeader(@PathVariable("id") Long UserId){
+	@PostMapping("/requestLeader/{id}")
+	public User requestLeader(@PathVariable("id") long UserId){
 		log.info("Inside requestLeader method of UserController");
 		return userService.requestLeader(UserId);
 	}
 	
-	@PutMapping("/approveLeader/{id}")
-	public User approveLeader(@PathVariable("id") Long UserId){
-		log.info("Inside approveLeader method of UserController");
-		return userService.approveLeader(UserId);
+	@PostMapping("/reviewLeader/{id}/{code}")
+	public User reviewLeader(@PathVariable("id") long UserId, @PathVariable("code") int code){
+		log.info("Inside reviewLeader method of UserController");
+		return userService.reviewLeader(UserId, code);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public User deleteUserById(@PathVariable("id") Long UserId){
+	public User deleteUserById(@PathVariable("id") long UserId){
 		log.info("Inside deleteUserbyId method of UserController");
 		return userService.deleteUserById(UserId);
 	}

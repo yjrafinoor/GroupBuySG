@@ -27,13 +27,13 @@ public class CommentController {
 	private CommentService commentService;
 
 	@GetMapping("/{pid}")
-	public List<Comment> getCommentById(@PathVariable("pid") Long productId){
+	public List<Comment> getCommentById(@PathVariable("pid") long productId){
 		log.info("Inside getCommentById method of CommentController");
 		return commentService.getCommentById(productId);
 	}
 	
 	@PostMapping("/create/{pid}/{uid}")
-	public Comment commentCreate (@PathVariable("pid") Long productId, @PathVariable("uid") Long userId, @RequestBody Comment comment){
+	public Comment commentCreate (@PathVariable("pid") long productId, @PathVariable("uid") long userId, @RequestBody Comment comment){
 		log.info("Inside commentCreate method of CommentController");
 		return commentService.commentCreate(productId, userId, comment);
 	}

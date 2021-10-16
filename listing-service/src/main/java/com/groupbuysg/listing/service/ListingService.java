@@ -1,5 +1,6 @@
 package com.groupbuysg.listing.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class ListingService {
 		return listingRepository.findAll();
 	}
 	
-	public List<Listing> joinerList(Long productId){
+	public List<Listing> joinerList(long productId){
 		log.info("Inside joinerList method of ListingService");
 		return listingRepository.findByProductId(productId);
 	}
 	
-	public Listing createAdmin(Listing listing, Long productId) {
+	public Listing createAdmin(Listing listing, long productId) {
 		log.info("Inside createLeader method of ListingService");
 		
 		User admin =
@@ -50,7 +51,7 @@ public class ListingService {
 		return listingRepository.save(listing);
 	}
 	
-	public Listing createLeader(Listing listing, Long productId, Long userId) {
+	public Listing createLeader(Listing listing, long productId, long userId) {
 		log.info("Inside createLeader method of ListingService");
 		listing.setProductId(productId);
 		listing.setUserId(userId);
@@ -60,7 +61,7 @@ public class ListingService {
 		return listingRepository.save(listing);
 	}
 
-	public Listing createJoiner(Listing listing, Long productId, Long userId) {
+	public Listing createJoiner(Listing listing, long productId, long userId) {
 		log.info("Inside createJoiner method of ListingService");
 		listing.setProductId(productId);
 		listing.setUserId(userId);
@@ -82,7 +83,7 @@ public class ListingService {
 		return listing;
 	}
 	
-	public List<Listing>  getItemByUserId(Long userId) {
+	public List<Listing>  getItemByUserId(long userId) {
 		log.info("Inside getItemByUserId method of ListingService");
 		return listingRepository.findByUserId(userId);	
 		/*
@@ -101,26 +102,36 @@ public class ListingService {
 	}
 	
 	
-	public Listing leaderCloseItem(Listing listingDetails, Long productId, Long userId) {
+	public Listing leaderCloseItem(Listing listingDetails, long productId) {
 		log.info("Inside leaderCloseItem method of ListingService");
-		
+
 		Listing leader = new Listing();
 		leader = getLeader(productId);
 		
-		leader.setTotalAmout(listingDetails.getTotalAmout());
-		leader.setStatusLeader("CONFIRMED");
+		Listing admin = new Listing();
+		admin = getAdmin(productId);
+	
+		leader.setTotalAmount(listingDetails.getTotalAmount());
+		leader.setStatusLeader("CONFIRMED, PENDING JOINERs PAYMENT");
 		listingRepository.save(leader);
 		
+		admin.setTotalAmount(listingDetails.getTotalAmount());
+		listingRepository.save(admin);
+		
 		int totalQty = leader.getTotalQuantity();
-		double totalAmt = listingDetails.getTotalAmout();
+		double totalAmt = listingDetails.getTotalAmount();
 		double unitAmt = totalAmt/totalQty;
 		
 		updateJoinerStatus(productId, unitAmt, 1);
 		
+		Product product = new Product();
+		restTemplate.postForObject("http://PRODUCT-SERVICE/products/status/" + productId + "/" + 1
+		, product, Product.class);
+		
 		return leader;
 	}
 	
-	public Listing getLeader (Long productId) {
+	public Listing getLeader (long productId) {
 		log.info("Inside getLeader method of ListingService");
 		Listing leader = new Listing();
 
@@ -136,7 +147,7 @@ public class ListingService {
 		return leader;
 	}
 	
-	public Listing getAdmin (Long productId) {
+	public Listing getAdmin (long productId) {
 		log.info("Inside getAdmin method of ListingService");
 		Listing admin = new Listing();
 		//Start: get leader
@@ -148,10 +159,81 @@ public class ListingService {
 				}
 			}
 		}
+		/*
+		ResponseObject obj=new ResponseObject();
+		User user=
+				restTemplate.getForObject("http://USER-SERVICE/users/list/" + admin.getUserId()
+				, User.class);
+		
+		obj.setListing(admin);
+		obj.setUser(user);
+		*/
 		return admin;
 	}
 	
-	public Listing getParticularJoiner (Long productId, Long userId) {
+	public Listing getListingAdmin (long productId) {
+		log.info("Inside getListingAdmin method of ListingService");
+		Listing admin = new Listing();
+		admin = getAdmin(productId);
+		return admin;
+	}
+	
+	public Listing getListingLeader (long productId) {
+		log.info("Inside getListingLeader method of ListingService");
+		Listing leader = new Listing();
+		leader = getLeader(productId);
+		return leader;
+	}
+	
+	public Listing getListingJoiner (long productId, long userId) {
+		log.info("Inside getListingJoiner method of ListingService");
+		Listing joiner = new Listing();
+		//Start: get Joiners
+		List<Listing> listings = listingRepository.findByProductId(productId);
+		if(listings.size()>0) {
+			for(int i=0; i<listings.size(); i++) {
+				if((listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true)
+						&& (listings.get(i).getUserId()==userId)) {
+					joiner = listings.get(i);
+				}
+			}
+		}
+		return joiner;
+	}
+	
+	public List<Listing> getListingJoiners (long productId) {
+		log.info("Inside getListingJoiners method of ListingService");
+		List<Listing> joiners = new ArrayList<>();
+
+		//Start: get Joiners
+		List<Listing> listings = listingRepository.findByProductId(productId);
+		if(listings.size()>0) {
+			for(int i=0; i<listings.size(); i++) {
+				if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true) {
+					joiners.add(listings.get(i));
+				}
+			}
+		}
+		return joiners;
+	}
+	
+	public List<Listing> getJoinersToReceive (long productId) {
+		log.info("Inside getListingJoiners method of ListingService");
+		List<Listing> joiners = new ArrayList<>();
+
+		//Start: get Joiners
+		List<Listing> listings = getListingJoiners(productId);
+		if(listings.size()>0) {
+			for(int i=0; i<listings.size(); i++) {
+				if(listings.get(i).getStatusJoiner().equals("TO RECEIVE")) {
+					joiners.add(listings.get(i));
+				}
+			}
+		}
+		return joiners;
+	}
+	
+	public Listing getParticularJoiner (long productId, long userId) {
 		log.info("Inside getParticularJoiner method of ListingService");
 		Listing joiner = new Listing();
 		//Start: get leader
@@ -168,7 +250,7 @@ public class ListingService {
 	
 	
 	
-	public void updateJoinerStatus(Long productId, double unitAmt, int code) {
+	public void updateJoinerStatus(long productId, double unitAmt, int code) {
 		log.info("Inside updateJoinerStatus method of ListingService");	
 		List<Listing> allJoiners = listingRepository.findByProductId(productId);
 log.info("Hee allJoiners.size(): "+allJoiners.size());
@@ -192,8 +274,8 @@ log.info("Hee allJoiners.size(): "+allJoiners.size());
 						
 						joinerPrice = joinerQty * unitAmt;
 						
-						allJoiners.get(i).setTotalAmout(joinerPrice);
-						allJoiners.get(i).setStatusJoiner("PENDING PAYMENT");
+						allJoiners.get(i).setTotalAmount(joinerPrice);
+						allJoiners.get(i).setStatusJoiner("TO PAID");
 						listingRepository.save(allJoiners.get(i));
 					}
 					if(code==2) {
@@ -204,8 +286,8 @@ log.info("Hee allJoiners.size(): "+allJoiners.size());
 log.info("HEE countPAID==countJoiners: "+ i + " : " +countPAID+" ; "+countJoiners);	
 
 					if(countPAID==countJoiners) {
-						updateAdmin(productId, 2);
-						updateLeader(productId, 1);
+						updateAdmin(productId, 2);  //adminCode 2: RECEIVED ALL JOINERs PAYMENT 
+						updateLeader(productId, 1);//leaderCode 1: PENDING ADMIN RELEASE 10%
 					}
 					if(code==3) {
 						updateAdmin(productId, 4); //adminCode 4: PENDING LEADER PASS TO JOINERs
@@ -226,7 +308,7 @@ log.info("Hee updateLeader(productId, 7): "+productId);
 					}					
 					if(code==5) {
 log.info("Hee code==5: ");
-						if(allJoiners.get(i).getStatusJoiner().equals("CONFIRMED RECEIVE")) {
+						if(allJoiners.get(i).getStatusJoiner().equals("RECEIVED")) {
 							countReceived+=1;
 						}
 log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+countJoiners);
@@ -240,7 +322,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		}		
 	}
 	
-	public Listing joinerPaid(Long productId, Long userId) {
+	public Listing joinerPaid(long productId, long userId) {
 		log.info("Inside joinerPaid method of ListingService");
 		Listing joiner = new Listing();
 		List<Listing> allJoiners = listingRepository.findByUserId(userId);
@@ -255,22 +337,22 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 					listingRepository.save(joiner);
 					
 					//checkAllJoinerPaid(productId);
-					updateJoinerStatus(productId, 0.00, 2);
+					updateJoinerStatus(productId, 0.00, 2); //joinderCode 2:
 				}
 			}
 		}	
 		return joiner;
 	}
 	
-	public Listing updateAdmin(Long productId, int adminCode) {
+	public Listing updateAdmin(long productId, int adminCode) {
 		log.info("Inside updateAdmin method of ListingService");
 		Listing admin = new Listing();
 		Listing leader = new Listing();
 		admin = getAdmin(productId);
 		leader = getLeader(productId);
 		
-		double amt10 = leader.getTotalAmout()*10/100;
-		double amt90 = leader.getTotalAmout()-amt10;
+		double amt10 = leader.getTotalAmount()*10/100;
+		double amt90 = leader.getTotalAmount()-amt10;
 		leader.setAmount10(amt10);
 		leader.setAmount90(amt90);
 		listingRepository.save(leader);
@@ -320,7 +402,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		return admin;
 	}
 	
-	public Listing updateLeader(Long productId, int leaderCode) {
+	public Listing updateLeader(long productId, int leaderCode) {
 		log.info("Inside updateLeader method of ListingService");
 		Listing leader = new Listing();
 		leader = getLeader(productId);
@@ -344,7 +426,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 			listingRepository.save(leader);
 		}
 		if(leaderCode==5) {
-			leader.setStatusLeader("RECEIVED ITEMS");
+			leader.setStatusLeader("RECEIVED PARCEL, TO MEET JOINERs");
 			listingRepository.save(leader);
 			updateJoinerStatus(productId, 0.00, 3);
 		}
@@ -362,7 +444,7 @@ log.info("Hee leader leader2: "+leader);
 		}
 		if(leaderCode==8) {
 			//AUTO STATUS
-			leader.setStatusLeader("ALL JOINERs UPDATED RECEIVED");
+			leader.setStatusLeader("ALL JOINERs RECEIVED, PENDING ADMIN PAY");
 			listingRepository.save(leader);
 		}
 		//9
@@ -375,17 +457,17 @@ log.info("Hee leader leader2: "+leader);
 			//leader.setStatusLeader("RECEIVED 90% FROM ADMIN");
 			leader.setStatusLeader("COMPLETED");
 			listingRepository.save(leader);
-			updateAdmin(productId, 8);
+			updateAdmin(productId, 8); //adminCode=8
 			
 			Product product = new Product();
-			restTemplate.postForObject("http://PRODUCT-SERVICE/products/close/" + productId
+			restTemplate.postForObject("http://PRODUCT-SERVICE/products/status/" + productId + "/" + 2
 			, product, Product.class);
 			
 		}
 		return leader;
 	}
 	
-	public Listing passedToJoiner(Long productId, Long userId) {
+	public Listing passedToJoiner(long productId, long userId) {
 		log.info("Inside passedToJoiner method of ListingService");
 		Listing joiner = new Listing();
 		joiner = getParticularJoiner(productId, userId);
@@ -397,8 +479,8 @@ log.info("Hee leader leader2: "+leader);
 		return joiner;
 	}
 	
-	public Listing joinderReceived(Long productId, Long userId) {
-		log.info("Inside joinderReceived method of ListingService");
+	public Listing joinerReceived(long productId, long userId) {
+		log.info("Inside joinerReceived method of ListingService");
 		Listing joiner = new Listing();
 		List<Listing> allJoiners = listingRepository.findByUserId(userId);
 		if(allJoiners.size()>0) {

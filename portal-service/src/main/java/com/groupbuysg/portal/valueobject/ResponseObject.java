@@ -15,4 +15,5 @@ public class ResponseObject {
 	private User user;
 	//private List<User> users;
 	private Product product;
+	private Comment comment;
 }

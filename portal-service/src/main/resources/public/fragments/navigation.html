@@ -10,22 +10,11 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						List
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="/user_list">User</a>
-						<a class="dropdown-item" href="/product_list">Product</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">###</a>
-						</div>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="/user_list"
-						tabindex="-1" aria-disabled="true">User List</a></li>
+					<li class="nav-item"><a class="nav-link" href="/product_create">Create_Prduct</a></li>
+					<li class="nav-item"><a class="nav-link" href="/user_list">User_List (Admin)</a></li>
+					<li class="nav-item"><a class="nav-link" href="/product_list">Product_List (Admin)</a></li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0">
 					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -33,5 +22,8 @@
 				</form>
 			</div>
 		</nav>
+		<!-- Check if errorMessage is not null and not empty -->       
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" /> 
+        <div th:if="${successMessage}" th:utext="${successMessage}" class="alert alert-success" role="alert" /> 
 	</div>
 </div>

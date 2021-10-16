@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf/.org">
 <head>
-    <!--Bootstrap-->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    
-    <!--CSS-->
-    <link rel="stylesheet" href="css/style.css"/> 
-
-    <!--Bootstrap v5.1-->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
-    -->
-	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
-    
+    <section id="import">
+		<div th:replace="fragments/import :: import"></div>
+	</section>
 	<meta charset="UTF-8">
     <title>Group Buy</title>
 </head>
@@ -92,13 +75,13 @@
 								<div class="col">
 									<div class="form-group">
 										<label>User Name</label>
-										<input class="form-control" type="text" name="userName" placeholder="johnny.s">
+										<input class="form-control" type="text" name="userName" th:maxlength="50" placeholder="johnny.s" required>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-group">
 										<label>Full Name</label>
-										<input class="form-control" type="text" name="fullName" placeholder="John Smith">
+										<input class="form-control" type="text" name="fullName" th:maxlength="50" placeholder="John Smith" required>
 									</div>
 								</div>
 							</div>
@@ -110,13 +93,13 @@
 								<div class="col">
 									<div class="form-group">
 										<label>Email</label>
-										<input class="form-control" type="text" name="email" placeholder="user@example.com">
+										<input class="form-control" type="text" name="email" th:maxlength="100" placeholder="user@example.com" required>
 									</div>
 								</div>
 							<div class="col">
 								<div class="form-group">
 									<label>Password</label>
-									<input class="form-control" type="password" name="password" id="password">
+									<input class="form-control" type="password" name="password" id="password" required>
 								</div>
 							</div>
 							</div>
@@ -140,17 +123,23 @@
 								<div class="col">
 									<div class="form-group">
 										<label>MRT Location</label>
-										<select name="mrt" class="form-control">
-											<option selected>Choose...</option>
-											<option>Boonlay</option>
-											<option>...</option>
+										<select name="mrt" class="form-control" required>
+											<option value="" selected>Choose...</option>
+											<option value="East West Line">East West Line</option>
+											<option value="North South Line">North South Line</option>
+											<option value="Circle Line">Circle Line</option>
+											<option value="Bukit Panjang LRT">Bukit Panjang LRT</option>
+											<option value="North East Line">North East Line</option>
+											<option value="Downtown Line">Downtown Line</option>
+											<option value="Punggol LRT">Punggol LRT</option>
+											<option value="Sengkang LRT">Sengkang LRT</option>
 										</select>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-group">
 										<label>Contact</label>
-										<input class="form-control" type="text" name="contact">
+										<input class="form-control" type="text" th:maxlength="8" name="contact" required>
 									</div>
 								</div>
 							</div>
@@ -162,13 +151,13 @@
 								<div class="col">
 									<div class="form-group">
 										<label>Pay Now Name</label>
-										<input class="form-control" type="text" name="paynowName">
+										<input class="form-control" type="text" th:maxlength="50" name="paynowName" required>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-group">
 										<label>Pay Now Number</label>
-										<input class="form-control" type="text" name="paynowMobile">
+										<input class="form-control" type="text" th:maxlength="8" name="paynowMobile" required>
 									</div>
 								</div>
 							</div>

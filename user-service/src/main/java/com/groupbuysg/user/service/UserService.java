@@ -1,5 +1,7 @@
 package com.groupbuysg.user.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,12 @@ public class UserService {
 		//user.setDateRegister(LocalDateTime.now());
 		user.setRequestLeader(false);
 		user.setDateBeLeader(null);
+		user.setIsActive(true);
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        user.setDateRegister(dateFormat.format(date).toString());
+		
 		userRepository.save(user);
 		
 		if(user.getUserId()==1) {
@@ -46,7 +54,7 @@ public class UserService {
 		return user;
 	}
 	
-	public User getUserById(Long userId) {
+	public User getUserById(long userId) {
 		log.info("Inside getUserById method of UserService");
 		return userRepository.findByUserId(userId);
 	}
@@ -61,13 +69,19 @@ public class UserService {
 		return admin;
 	}
 	
-	public User updateUser(Long userId, User userDetails) {
+	public User updateUser(long userId, User userDetails) {
 		log.info("Inside updateUser method of UserService");
 		User user = userRepository.findByUserId(userId);
 		user.setUserName(user.getUserName());
 		user.setFullName(userDetails.getFullName());
 		user.setEmail	(userDetails.getEmail());
-		user.setPassword(userDetails.getPassword());
+		
+		if (userDetails.getPassword()!=null) {
+			user.setPassword(userDetails.getPassword());
+		}
+		else {
+			user.setPassword(user.getPassword());
+		}
 		user.setAddress	(userDetails.getAddress());
 		user.setMrt		(userDetails.getMrt());
 		user.setRole	(user.getRole());
@@ -77,30 +91,51 @@ public class UserService {
 		user.setDateRegister(user.getDateRegister());
 		user.setRequestLeader(userDetails.getRequestLeader());
 		user.setDateBeLeader(userDetails.getDateBeLeader());
+		user.setIsActive(user.getIsActive());
 		return userRepository.save(user);
 	}
 	
-	public User requestLeader(Long userId) {
+	public User requestLeader(long userId) {
 		log.info("Inside requestLeader method of UserService");
 		User user = userRepository.findByUserId(userId);
 		user.setRequestLeader(true);
 		return userRepository.save(user);
 	}
 	
-	public User approveLeader(Long userId) {
+	public User reviewLeader(long userId, int code) {
 		log.info("Inside approveLeader method of UserService");
 		User user = userRepository.findByUserId(userId);
-		user.setRole("LEADER");
+log.info("Hee reviewLeader: "+userId +" : "+code);
+		if(code==1) {
+			user.setRequestLeader(null);
+			user.setRole("LEADER");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        Date date = new Date();
+	        user.setDateBeLeader(dateFormat.format(date).toString());
+		}
+		if(code==2) {
+			user.setRequestLeader(false);
+			user.setRole("USER");
+		}
+			
 		return userRepository.save(user);
 	}
 	
-	public User deleteUserById(Long userId) {
+	public User deleteUserById(long userId) {
+		log.info("Inside deleteUserbyId method of UserService");
+		User user = userRepository.findByUserId(userId);
+		user.setIsActive(false);
+		return userRepository.save(user);
+	}
+	
+/*	
+	public User deleteUserById(long userId) {
 		log.info("Inside deleteUserbyId method of UserService");
 		userRepository.deleteById(userId);
 		return null;
 	}
 	
-/*
+
 	public ResponseObject getUserWithListing(long userId) {
 		log.info("Inside getUserWithListing method of UserService");
 		ResponseObject obj=new ResponseObject();

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class User {
 	
 	@Id
-	private Long userId;
+	private long userId;
 	private String userName;
 	private String fullName;
 	private String email;
@@ -28,5 +28,6 @@ public class User {
 	private Boolean requestLeader;
 	private String dateBeLeader;
 	//private Date dateBeLeader;
+	private Boolean isActive;
 	
 }

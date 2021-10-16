@@ -22,7 +22,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userId;
+	private long userId;
 	private String userName;
 	private String fullName;
 	private String email;
@@ -37,6 +37,7 @@ public class User {
 	private String dateRegister;
 	private Boolean requestLeader;
 	private String dateBeLeader;
+	private Boolean isActive;
 	//private Date dateBeLeader;
 	
 }

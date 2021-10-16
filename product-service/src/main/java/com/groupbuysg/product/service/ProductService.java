@@ -1,5 +1,8 @@
 package com.groupbuysg.product.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +32,14 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 	
-	public Product itemCreate(Product product, Long userId) {
+	public Product itemCreate(Product product, long userId) {
 		log.info("Inside itemCreate method of ProductService");
 		product.setStatus("OPEN");
 		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        product.setCreatedDate(dateFormat.format(date).toString());
+        		
 		product.setUserId(userId);
 		productRepository.save(product);
 		
@@ -47,11 +54,12 @@ public class ProductService {
 		return product;
 	}
 	
-	public ResponseObject getItemById(Long productId) {
+	public Product getItemById(long productId) {
 		log.info("Inside getItemById method of ProductService");
 		ResponseObject obj=new ResponseObject();
-		Product product=productRepository.findByProductId(productId);	
+		Product product=productRepository.findByProductId(productId);
 		
+		/*
 		User user=
 				restTemplate.getForObject("http://USER-SERVICE/users/list/" + product.getUserId()
 				, User.class);
@@ -60,9 +68,11 @@ public class ProductService {
 		obj.setUser(user);
 		
 		return obj;
+		*/
+		return product;
 	}
 	
-	public Product updateItem(Long productId, Product productDetails) {
+	public Product updateItem(long productId, Product productDetails) {
 		log.info("Inside updateItem method of ProductService");
 		Product product = productRepository.findByProductId(productId);
 		product.setProductName(productDetails.getProductName());
@@ -83,17 +93,24 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 	
-	public ResponseObject deleteItemById(Long productId) {
+	public ResponseObject deleteItemById(long productId) {
 		log.info("Inside deleteItemById method of ProductService");
 		productRepository.deleteById(productId);	
 		return null;
 	}
 	
-	public Product closeItem(Long productId) {
+	public Product updateStatus(long productId, int code) {
 		log.info("Inside closeItem method of ProductService");
 		Product product = new Product();
 		product = productRepository.findByProductId(productId);
-		product.setStatus("CLOSED");
+		
+		if(code==1) {
+			product.setStatus("IN PROGRESS");
+		}
+		
+		if(code==2) {
+			product.setStatus("CLOSED");
+		}
 		return productRepository.save(product);
 	}
 

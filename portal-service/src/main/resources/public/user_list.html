@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf/.org">
 <head>
-    <!--Bootstrap-->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    
-    <!--CSS-->
-    <link rel="stylesheet" href="css/style.css"/> 
-
-    <!--Bootstrap v5.1-->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
-    -->
-	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
-    
+    <section id="import">
+		<div th:replace="fragments/import :: import"></div>
+	</section>
 	<meta charset="UTF-8">
     <title>User List</title>
 </head>
@@ -45,6 +28,7 @@
 						  <th>ID</th>
 						  <th class="max-width">USER NAME</th>
 						  <th class="max-width">EMAIL</th>
+						  <th class="max-width">ACTIVE</th>
 						  <th class="max-width">ROLE</th>
 						  <th class="max-width">LEADER REQUST</th>
 						  <th class="max-width">Edit</th>
@@ -60,18 +44,25 @@
 						  </td>
 						  <td class="text-nowrap align-middle" th:text="${user.userId}"><a th:href="@{/users/(id=${user.userId})}" class="link-primary">User ID</a></td>
 						  <td class="text-nowrap align-middle" th:text="${user.userName}">User Name</td>
-						  <td class="text-nowrap align-middle" th:text="${user.fullName}">Full Name</td>
-						  <td class="text-center align-middle">LEADER</td>
+						  <td class="text-nowrap align-middle" th:text="${user.email}">Full Name</td>
+						  <td class="text-center align-middle" th:text="${user.isActive}"></td>
+						  <td class="text-center align-middle" th:text="${user.role}"></td>
 						  <td class="text-center align-middle">
-							<div class="btn-group align-top" hidden>
-								<button type="button" class="btn btn-outline-success" style="float: left;">Approve</button>
-								<button type="button" class="btn btn-outline-danger" style="float: right;">Reject</button>
+						  <div th:if="${user.role} eq 'USER' or ${user.role} eq 'LEADER'">
+							<div class="form-row btn-group align-top">
+								<form th:if="${user.requestLeader} eq true" th:action="@{/approveLeader/{id}(id=${user.userId})}" method="post">
+									<button type="submit" class="btn btn-outline-success" style="float: left;">Approve</button>
+								</form>
+								<form th:if="${user.requestLeader} eq true or ${user.requestLeader} eq null" th:action="@{/rejectLeader/{id}(id=${user.userId})}" method="post">
+									 <button type="submit" class="btn btn-outline-danger" style="float: right;">Reject</button>
+								</form>
 							</div>
+						  </div>
 						  </td>
 						  <td class="text-center align-middle">
 							<div class="btn-group align-top">
-								<button type="button" class="btn btn-outline-success" style="float: left;">Edit</button>
-								<button type="button" class="btn btn-outline-danger" style="float: right;">Delete</button>
+								<a type="button" class="btn btn-outline-success" style="float: left;" th:href="@{/editUser/{id}(id=${user.userId})}">Edit</a>
+								<a type="button" th:unless="${user.role} eq 'ADMIN' or ${user.isActive} eq false" class="btn btn-outline-danger" style="float: right;" th:href="@{/deleteUser/{id}(id=${user.userId})}">Delete</a>
 							</div>
 						  </td>
 						</tr>

@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf/.org">
 <head>
-    <!--Bootstrap-->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    
-    <!--CSS-->
-    <link rel="stylesheet" href="css/style.css"/> 
-
-    <!--Bootstrap v5.1-->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
-    -->
-	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
-    
+    <section id="import">
+		<div th:replace="fragments/import :: import"></div>
+	</section>
 	<meta charset="UTF-8">
     <title>Product Update</title>
 </head>
@@ -30,27 +13,28 @@
 	</section>
 	<section id="updateProduct">
         <div class="container">
-			<h2>Product Update</h2>
-			<form class="form" novalidate="">
+        	
+        	<h2>Product Update</h2>
+			<form class="form" action="#" th:action="@{/updateProduct/{id} (id=${product.productId})}" th:object="${product}" method="post">
 		    <div class="row">
 			  <div class="col">
 				<div class="row">
 				  <div class="col-md-2">
 					<div class="form-group">
-					  <label>ID</label>
-					  <input class="form-control" type="text" name="id" id="id" value="10000001" disabled>
+					  <label>Created Date</label>
+					  <input class="form-control" type="text" th:field="*{createdDate}" disabled>
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
 					  <label>STATUS</label>
-					  <input class="form-control" type="text" name="status" id=status" value="OPEN" disabled>
+					  <input class="form-control" type="text" th:field="*{status}" disabled>
 					</div>
 				  </div>
 				  <div class="col">
 					<div class="form-group">
 					  <label>Leader Name</label>
-					  <input class="form-control" type="text" name="leader_name" id=leader_name" value="HEE KA HAO" disabled>
+					  <input class="form-control" type="text" th:object="${user}" th:field="*{fullName}" disabled>
 					</div>
 				  </div>
 				</div>
@@ -62,13 +46,13 @@
 				  <div class="col-md-4">
 					<div class="form-group">
 					  <label>Product Name</label>
-					  <input class="form-control" type="text" name="product_name" id="product_name" value="Magic Pen">
+					  <input class="form-control" type="text" th:field="*{productName}" th:maxlength="50" required>
 					</div>
 				  </div>
 				  <div class="col">
 					<div class="form-group">
 					  <label>Description</label>
-					  <input class="form-control" type="text" name="description" id=description" placeholder="Description in 100 words" value="If we get quantity 100 the price will be SGD5 per peice.">
+					  <input class="form-control" type="text" th:field="*{description}" th:maxlength="100" required>
 					  <small id="passwordHelpBlock" class="form-text text-muted">Short description in 100 words.</small>
 					</div>
 				  </div>
@@ -81,8 +65,8 @@
 				  <div class="col">
 					<div class="form-group">
 					<label>Details</label>
-					  <textarea class="form-control" rows="3" name="details" id=details" value="This is good for use, bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. fafoan naiofnais"></textarea>
-					  <small id="passwordHelpBlock" class="form-text text-muted">Descript more details for the product.</small>
+					  <textarea class="form-control" rows="3" th:field="*{details}"></textarea>
+					  <small id="passwordHelpBlock" class="form-text text-muted">Explain more details for the product.</small>
 					</div>
 				  </div>
 				</div>
@@ -94,22 +78,25 @@
 				  <div class="col-md-4">
 					<div class="form-group">
 					<label>URL</label>
-					<input class="form-control" type="text" name="url" id="url" value="www.google.com">
+					<input class="form-control" type="text" th:field="*{url}">
 					</div>
 				  </div>
 				  <div class="col">
 					<div class="form-group">
 					<label>Due Date</label>
-					<input class="form-control" type="date" name="due_date" id="due_date" value="10/08/2021">
+					<input class="form-control" type="date" th:field="*{dueDate}" required>
 					</div>
 				  </div>
 				  <div class="col">
 					<div class="form-group">
 					<label>Category</label>
-					  <select name="category" id="category" class="form-control">
-						<option>Choose...</option>
-						<option selected>Stationary</option>
-						<option>...</option>
+					  <select class="form-control" required>
+						<option value="">Choose...</option>
+						<option value="Stationary" th:selected="('Stationary' == *{category})">Stationary</option>
+						<option value="Cosmetic" th:selected="('Cosmetic' == *{category})">Cosmetic</option>
+						<option value="Mask" th:selected="('Mask' == *{category})">Mask</option>
+						<option value="Food" th:selected="('Food' == *{category})">Food</option>
+						<option value="Others" th:selected="('Others' == *{category})">Others</option>
 					  </select>
 					</div>
 				  </div>
@@ -122,37 +109,37 @@
 				  <div class="col-md-2">
 					<div class="form-group">
 					  <label for="qty1">Quantity 1 <</label>
-					  <input class="form-control" type="text" name="quantity_1" id="quantity_1" placeholder="100" value="100">
+					  <input class="form-control" type="number" th:field="*{firstQuantity}" placeholder="100" required>
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
 					  <label for="qty1">Price 1</label>
-					  <input class="form-control" type="text" name="price_1" id="price_1" placeholder="10" value="10">
+					  <input class="form-control" type="number" th:field="*{firstPrice}" placeholder="10" required>
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
-					  <label for="qty1">Quantity 2 <</label>
-					  <input class="form-control" type="text" name="quantity_2" id="quantity_2" placeholder="100" value="100">
+					  <label for="qty1">> Quantity 2</label>
+					  <input class="form-control" type="number" th:field="*{secondQuantity}" placeholder="100">
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
 					  <label for="qty1">Price 2</label>
-					  <input class="form-control" type="text" name="price_2" id="price_2" placeholder="5" value="5">
+					  <input class="form-control" type="number" th:field="*{secondPrice}" placeholder="5">
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
-					  <label for="qty1">Quantity 3 <</label>
-					  <input class="form-control" type="text" name="quantity_3" id="quantity_3" placeholder="-" value="-">
+					  <label for="qty1">> Quantity 3</label>
+					  <input class="form-control" type="number" th:field="*{thirdQuantity}" placeholder="-">
 					</div>
 				  </div>
 				  <div class="col-md-2">
 					<div class="form-group">
 					  <label for="qty1">Price 3</label>
-					  <input class="form-control" type="text" name="price_3" id="price_3" placeholder="-" value="-">
+					  <input class="form-control" type="number" th:field="*{thirdPrice}" placeholder="-">
 					</div>
 				  </div>
 				</div>
@@ -170,12 +157,14 @@
 			</div>
 			<div class="row">
 			  <div class="col d-flex justify-content-end">
+			  	<input  class="btn btn-secondary" value='Back' type='button' onclick='javascript:window.history.back()'/>
 				<button class="btn btn-primary" type="submit">Update</button>
 			  </div>
 			</div>
 		  </form>
         </div>
     </section>
+    
 
 	<section id="footer">
 	<!--  <div th:replace="fragments/footer :: ${#authentication.principal.isAdmin()} ? 'footer-admin' : 'footer'">

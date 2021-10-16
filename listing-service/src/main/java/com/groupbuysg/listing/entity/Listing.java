@@ -19,9 +19,9 @@ public class Listing {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long listingId;
+	private long listingId;
 	private Integer totalQuantity;
-	private Double  totalAmout;
+	private Double  totalAmount;
 	private Double amount10;
 	private Double amount90;
 	private String DateAmount10;
@@ -33,8 +33,8 @@ public class Listing {
 	private String statusAdmin;
 	private Boolean isLeader;
 	private Boolean allJoinerPaid;
-	private Long productId;
-	private Long userId;
+	private long productId;
+	private long userId;
 	
 
 }

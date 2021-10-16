@@ -33,33 +33,33 @@ public class ProductController {
 	}
 	
 	@PostMapping("/create/{uid}")
-	public Product itemCreate (@RequestBody Product product, @PathVariable("uid") Long userId){
+	public Product itemCreate (@RequestBody Product product, @PathVariable("uid") long userId){
 		log.info("Inside itemCreate method of ProductController");
 		return productService.itemCreate(product, userId);
 	}
 	
 	@GetMapping("/list/{pid}")
-	public ResponseObject getItemById(@PathVariable("pid") Long productId){
+	public Product getItemById(@PathVariable("pid") long productId){
 		log.info("Inside getItemById method of ProductController");
 		return productService.getItemById(productId);
 	}
 	
-	@PutMapping("/update/{pid}")
-	public Product updateItem (@PathVariable("pid") Long productId, @RequestBody Product product){
+	@PostMapping("/update/{pid}")
+	public Product updateItem (@PathVariable("pid") long productId, @RequestBody Product product){
 		log.info("Inside updateItem method of ProductController");
 		return productService.updateItem(productId, product);
 	}
 	
 	@DeleteMapping("/delete/{pid}")
-	public ResponseObject deleteItemById(@PathVariable("pid") Long productId){
+	public ResponseObject deleteItemById(@PathVariable("pid") long productId){
 		log.info("Inside deleteItemById method of ProductController");
 		return productService.deleteItemById(productId);
 	}
 	
-	@PostMapping("/close/{pid}")
-	public Product closeItem (@PathVariable("pid") Long productId){
-		log.info("Inside closeItem method of ProductController");
-		return productService.closeItem(productId);
+	@PostMapping("/status/{pid}/{code}")
+	public Product updateStatus (@PathVariable("pid") long productId, @PathVariable("code") int code){
+		log.info("Inside updateStatus method of ProductController");
+		return productService.updateStatus(productId, code);
 	}
 	
 }

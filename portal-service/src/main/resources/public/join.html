@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf/.org">
 <head>
-    <!--Bootstrap-->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    
-    <!--CSS-->
-    <link rel="stylesheet" href="css/style.css"/> 
-
-    <!--Bootstrap v5.1-->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
-    -->
-	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
-    
+    <section id="import">
+		<div th:replace="fragments/import :: import"></div>
+	</section>
 	<meta charset="UTF-8">
     <title>Product Join</title>
 </head>
@@ -32,328 +15,351 @@
 	  <div class="container">
 	    <div class="form-row">
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-			<h2>Magic Pen</h2>
+			<h2 th:text="${product.productName}"></h2>
 			 <table>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">ID</th>
-						<td colspan="2">1</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Status</th>
-						<td colspan="2">
-							<span class="badge badge-pill badge-info">OPEN</span>
-							<span class="badge badge-pill badge-info">WITHDRAW</span>
-							<span class="badge badge-pill badge-info">CLOSE</span>
+						<th class="small text-muted pr-2" scope="row">Status</th>
+						<td>
+							<span class="badge badge-pill badge-info" th:text="${product.status}"></span>
 						</td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
+						<th class="small text-muted pr-2" scope="row">Category</th>
+						<td colspan="4" th:text="${product.category}"></td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Description</th>
-						<td colspan="2">If we get quantity 100 the price will be SGD5 per peice.</td>
+						<th class="small text-muted pr-2" scope="row">Description</th>
+						<td colspan="4" th:text="${product.description}">Descriptions</td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
+						<th class="small text-muted pr-2" scope="row">Details</th>
+						<td colspan="4" th:text="${product.details}">Details</td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Details</th>
-						<td colspan="2">This is good for use, bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. fafoan naiofnais</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">URL</th>
-						<td colspan="2"><a href="#" class="link-primary">www.google.com</a></td>
+						<th class="small text-muted pr-2" scope="row">URL</th>
+						<td colspan="4"><a href="#" class="link-primary" th:text="${product.url}">url</a></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Category</th>
-						<td colspan="2">Stationary</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
+						<td colspan="4"><br></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Price</th>
-						<td class="small text-muted pr-1">Quantity</td>
-						<td class="small text-muted pr-1">Unit Price (SGD $)</td>
+						<td class="small text-muted pr-1" valign="top">Quantity</td>
+						<td class="small text-muted pr-1" valign="top">Unit Price (SGD $)</td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top"></th>
-						<td><100</td>
-						<td>10</td>
+						<td valign="top" th:text="${product.firstQuantity}"><100</td>
+						<td valign="top" th:text="${product.firstPrice}">10</td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top"></th>
-						<td>>100</td>
-						<td>5</td>
+						<td valign="top" th:text="${product.secondQuantity}">>100</td>
+						<td valign="top" th:text="${product.secondPrice}">5</td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top"></th>
-						<td>-</td>
-						<td>-</td>
+						<td valign="top" th:text="${product.thirdQuantity}">-</td>
+						<td valign="top" th:text="${product.thirdPrice}">-</td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
-						<td colspan="2"><br></td>
+						<td colspan="4"><br></td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Due Date</th>
-						<td colspan="2">99 DEC 9999</td>
+						<th class="small text-muted pr-2" scope="row">Total Joiners QTY</th>
+						<td colspan="4" th:text="${leader.totalQuantity}"></td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Due Date</th>
+						<td colspan="4" th:text="${product.dueDate}">99 DEC 9999</td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top"><br></th>
+						<td colspan="4"><br></td>
 					</tr>
 			 </table>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 			  <div>
 			    <h2>Leader</h2>
-				<table>			
+				<table>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">ID</th>
-						<td>01234</td>
+						<th class="small text-muted pr-2" scope="row">Name</th>
+						<td th:text="${leaderDetails.fullName}"></td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Rating</th>
+						<td>5/5   xxxxxxx</td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Location</th>
+						<td th:text="${leaderDetails.mrt}"></td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row">STATUS</th>
+						<td>
+						    <span class="badge badge-pill badge-info" th:text="${leader.statusLeader}"></span>
+						</td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Total Qty</th>
+						<td th:text="${leader.totalQuantity}"></td>
+					</tr>
+					<div th:unless="${leader.statusLeader} eq 'OPEN'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Final Price</th>
+						<td th:text="${leader.totalAmount}"></td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'OPEN'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Final Price</th>
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/leaderConfirm/{id} (id=${leader.productId})}" method="post">
+								<input class="form-control col-md-4" type="text" placeholder="SGD($)" name="totalAmount" required>
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Confirm</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'ADMIN RELEASED 10% AMOUNT'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Received Admin 10%</th>
+						<td th:text="${leader.amount10}"></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/leaderReceived10/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Received</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'RECEIVED 10% FROM ADMIN' or 
+								${leader.statusLeader} eq 'ADMIN RELEASED REMIND AMOUNT'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Received Admin 10%</th>
+						<td th:text="${leader.amount10}"></td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'RECEIVED 10% FROM ADMIN'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Proceed Order</th>
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/leaderProceedOrder/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Proceed to Order</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'MAKE ORDER and PENDING SHIPPING'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row">Product Receive</th>
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/leaderReceivedParcel/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Received Parcel</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'RECEIVED PARCEL, TO MEET JOINERs' or 
+								${leader.statusLeader} eq 'SCHEDULING TO MEET JOINERs'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row"  valign="top">Passed to Joiner</th>
+						<td class="small text-muted pr-2">
+						  	<table>
+						  		<tbody th:each="toPass : ${toPassJoiners}">
+									<tr>
+										<td class="small text-muted pr-2">
+											<form class="form-row" th:action="@{/passToJoiner/{pid}/{uid} (pid=${toPass.productId}, uid=${toPass.userId})}" method="post">
+												<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;" th:text="${toPass.userId}"></button>
+											</form>
+										</td>
+									</tr>
+						  	</table>
+						  	
+						</td>
+					</tr>
+					</div>
+					<div th:if="${leader.statusLeader} eq 'ADMIN RELEASED REMIND AMOUNT'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Received Admin Remaining</th>
+						<td th:text="${leader.amount90}"></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/leaderReceived90/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Received</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h2>Admin</h2></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Name</th>
-						<td>Hee Ka Hao</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Rating</th>
-						<td>5/5</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Location</th>
-						<td>Jurong West</td>
+						<td th:text="${adminDetails.fullName}"></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">STATUS</th>
 						<td>
-						    <span class="badge badge-pill badge-info">OPEN</span>
-							<span class="badge badge-pill badge-info">WITHDRAW</span>
-							<span class="badge badge-pill badge-info">CONFIRMED</span>
-							<span class="badge badge-pill badge-info">RECEIVED 10%</span>
-							<span class="badge badge-pill badge-info">PENDING ITEM</span>
-							<span class="badge badge-pill badge-info">PASSED TO JOINER(s)</span>
-							<span class="badge badge-pill badge-info">PENDING 90%</span>
-							<span class="badge badge-pill badge-info">CLOSE</span>
+						    <span class="badge badge-pill badge-info" th:text="${admin.statusAdmin}"></span>
 						</td>
 					</tr>
+					<div th:if="${admin.statusAdmin} eq 'RECEIVED ALL JOINERs PAYMENT'">
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">After Due Date</th>
-						<td>
-							<div class="form-row">
-								<input class="form-control col-md-3" type="text" name="final_qty" id="final_qty" placeholder="QTY">
-								<input class="form-control col-md-4" type="text" name="final_amt" id="final_amt" placeholder="AMT">
-								<button type="button" class="btn btn-outline-primary" style="float: left;">CONFIRM</button>
-								<button type="button" class="btn btn-outline-primary" style="float: right;">WITHDRAW</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">All Joiner Confirmed</th>
-						<td>
-						<div class="col">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Proceed to Order</button>
-						</div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Receveid Amin 10%</th>
-						<td>
-							<div class="form-row">
-								<input class="form-control col-md-7" type="text" name="received_10_amt" id="received_10_amt" placeholder="AMT">
-								<button type="button" class="btn btn-outline-primary" style="float: left;">Received</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Expected Date Receive</th>
-						<td>
-							<div class="form-row">
-								<input class="form-control col-md-7" type="date" name="date_expected_receive" id="date_expected_receive" placeholder="DATE">
-								<button type="button" class="btn btn-outline-primary" style="float: left;">UPDATE</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Product Receive</th>
-						<td>
-						  <div class="col">
-						    <button type="button" class="btn btn-outline-primary" style="float: left;">Received</button>
-						  </div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Passed to all Joiner</th>
-						<td>
-						  <div class="col">
-						    <button type="button" class="btn btn-outline-primary" style="float: left;">Pass to all joiner</button>
-						  </div>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Receveid Amin 90%</th>
-						<td>
-							<div class="form-row">
-								<input class="form-control col-md-4" type="text" name="received_90_amt" id="received_90_amt" placeholder="Amt">
-								<button type="button" class="btn btn-outline-primary" style="float: left;">Close the Product</button>
-							</div>
-						</td>
-					</tr>
-			    </table>
-			  </div>
-			  <hr>
-			  <div>
-			    <h2>Admin</h2>
-				<table>				
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">ID</th>
-						<td>admin</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Name</th>
-						<td>Ranjit</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">STATUS</th>
-						<td>
-						    <span class="badge badge-pill badge-info">OPEN</span>
-							<span class="badge badge-pill badge-info">RECEIVED ALL AMT FROM JOINER(s)</span>
-							<span class="badge badge-pill badge-info">RELEASED 10%</span>
-							<span class="badge badge-pill badge-info">RELEASED 90%</span>
-							<span class="badge badge-pill badge-info">CLOSE</span>
-						</td>
-					</tr>
-					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">All joiner PAID</th>
-						<td>
-						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="received_all_joint_amt" id="received_all_joint_amt" placeholder="Amount">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Received</button>
-						</div>
-						</td>
+						<th class="small text-muted pr-2" scope="row" valign="top">Total Amount from Joiners</th>
+						<td th:text="${admin.totalAmount}"></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Release 10% to Leader</th>
-						<td>
-						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="release_10_amt" id="release_10_amt" placeholder="Amount">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Released</button>
-						</div>
-						</td>
+						<td th:text="${admin.amount10}"></td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Release 90% to Leader</th>
-						<td>
-						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="release_90_amt" id="release_90_amt" placeholder="Amount">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Released</button>
-						</div>
+						<th></th>
+						<td class="small text-muted pr-2" >
+							<form class="form-row" th:action="@{/adminRelease10/{id} (id=${admin.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Released to Leader</button>
+							</form>
 						</td>
 					</tr>
-			    </table>
-			  </div>
-			  <hr>
-			  <div>
-			    <h2>Joiner</h2>
-				<table>				
+					</div>
+					<div th:if="${admin.statusAdmin} eq 'RELEASED 10% TO LEADER' or 
+								${admin.statusAdmin} eq 'PENDING LEADER PASS TO JOINERs' or 
+								${admin.statusAdmin} eq 'PENDING JOINERs CONFIM RECEIVE' or 
+								${admin.statusAdmin} eq 'PLEASE RELEASE REMAINDING AMOUNT' or 
+								${admin.statusAdmin} eq 'RELEASED REMAIND AMOUNT TO LEADER'">
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">ID</th>
-						<td>01234</td>
+						<th class="small text-muted pr-2" scope="row" valign="top">Total Amount from Joiners</th>
+						<td th:text="${admin.totalAmount}"></td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Released 10% to Leader</th>
+						<td th:text="${admin.amount10}"></td>
+					</tr>
+					</div>
+					<div th:if="${admin.statusAdmin} eq 'PLEASE RELEASE REMAINDING AMOUNT'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Remain Amt to Release</th>
+						<td th:text="${admin.amount90}"></td>
+					</tr>
+					<tr>
+						<th></th>
+						<td class="small text-muted pr-2" >
+							<form class="form-row" th:action="@{/adminRelease90/{id} (id=${admin.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Released</button>
+							</form>
+						</td>
+					</tr>
+					</div>
+					<div th:if="${admin.statusAdmin} eq 'RELEASED REMAIND AMOUNT TO LEADER'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Released Remain Amt</th>
+						<td th:text="${admin.amount90}"></td>
+					</tr>
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Total Released Amt</th>
+						<td th:text="${admin.totalAmount}"></td>
+					</tr>
+					</div>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h2>Joiner</h2></td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Name</th>
 						<td>Rafi</td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">Join for this product</th>
+						<th class="small text-muted pr-2" scope="row">STATUS</th>
 						<td>
-						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="joiner_qty" id="joiner_qty" placeholder="Qty">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Join</button>
-						</div>
+						    <span class="badge badge-pill badge-info">xxx</span>
 						</td>
 					</tr>
+					<div th:if="${leader.statusLeader} eq 'OPEN'">
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">After Leader update Total</th>
-						<td>
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Confirm</button>
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Cancel</button>
+						<th class="small text-muted pr-2" scope="row" valign="top">Join for this product</th>
+						<td class="small text-muted pr-2" >
+							<div class="form-row">
+								<input class="form-control col-md-4" type="text" placeholder="Qty">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Join</button>
+							</div>
 						</td>
 					</tr>
+					</div>
+					<div th:unless="${leader.statusLeader} eq 'OPEN'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Qty Joined</th>
+						<td>xxx</td>
+					</tr>
+					</div>
+					<div th:if="${admin.statusAdmin} eq 'PENDING JOINERs PAYMENT'">
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Pending Payment</th>
-						<td>
-						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="joiner_paid_amt" id="joiner_paid_amt" placeholder="Qty">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Paid</button>
-						</div>
-						</td>
+						<td>xxx</td>
 					</tr>
 					<tr>
-						<th class="small text-muted pr-2" scope="row" valign="top">After Leader Received</th>
-						<td>
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Item Received</button>
+						<th></th>
+						<td class="small text-muted pr-2">
+							<div class="form-row">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Paid</button>
+							</div>
+						</td>
+					</tr>
+					</div>
+					<!--  -->
+					<div th:if="${admin.statusAdmin} eq 'PENDING JOINERs CONFIM RECEIVE'">
+					<tr>
+						<th class="small text-muted pr-2" scope="row" valign="top">Received Item</th>
+						<td class="small text-muted pr-2">
+							<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Confirm</button>
 						</td>
 					</tr>
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Rate for Leader</th>
-						<td>
+						<td class="small text-muted pr-2">
 						<div class="form-row">
-							<input class="form-control col-md-4" type="text" name="joiner_rating" id="joiner_rating" placeholder="Rate">
-							<button type="button" class="btn btn-outline-primary" style="float: left;">Rate</button>
+							<input class="form-control col-md-4" type="text" placeholder="Rate">
+							<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Rate</button>
 						</div>
 						</td>
 					</tr>
+					</div>
 			    </table>
 			  </div>
 			</div>
 		</div>
-		</p>
-		</p>
+		<hr>
 		<div class="form-row">
 			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 				<div class="comment-wrapper">
 					<div class="panel panel-info">
 						<h2>Comments</h2>
 						<div class="panel-body">
-							<textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
-							<br>
-							<div class="col d-flex justify-content-end">
-							  <button type="button" class="btn btn-info pull-right ">Post</button>
-						    </div>
+							<form class="form-row" th:action="@{/postComment/{pid} (pid=${product.productId})}" method="post">
+								<textarea class="form-control" placeholder="write a comment..." rows="3" name="commentText" required></textarea>
+								<br>
+								<div class="col d-flex justify-content-end">
+								  <button type="submit" class="btn btn-info pull-right">Post</button>
+							    </div>
+							</form>
 							<hr>
-							<ul class="list-unstyled">
+							<ul class="list-unstyled"  th:each="comments : ${allComments}">
 								<li class="media">
 									<div class="media-body">
-										<strong class="text-success">Rafi</strong>
-										<small class="text-muted">30 min ago</small>
-										<p>okok.</p>
-									</div>
-								</li>
-								<li class="media">
-									<div class="media-body">
-										<strong class="text-success">Ka Hao</strong>
-										<small class="text-muted">1 day ago</small>
-										<p>See Description</p>
-									</div>
-								</li>
-								<li class="media">
-									<div class="media-body">
-										<strong class="text-success">Rafi</strong>
-										<small class="text-muted">2 days ago</small>
-										<p>Where the Magic Pen from?</p>
+										<strong class="text-success" th:text="${comments.userId}"></strong> 
+										<small class="text-muted" th:text="${comments.commentDate}"></small>
+										<p th:text="${comments.commentText}"></p>
 									</div>
 								</li>
 							</ul>
@@ -363,33 +369,22 @@
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<h2>Joined</h2>
-				<ul class="list-group">
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-					Rafi
-					<span class="badge badge-pill badge-primary">14</span>
-					<span class="badge badge-pill badge-info">JOINED</span>
-				  </li>
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-					Ranjit
-					<span class="badge badge-pill badge-primary">2</span>
-					<span class="badge badge-pill badge-info">JOINED</span>
-				  </li>
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-					Jason
-					<span class="badge badge-pill badge-primary">1</span>
-					<span class="badge badge-pill badge-info">JOINED</span>
-				  </li>
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-					<span class="badge badge-pill badge-info">JOINED</span>
-					<span class="badge badge-pill badge-danger">CANCEL</span>
-					<span class="badge badge-pill badge-primary">CONFIRM</span>
-					<span class="badge badge-pill badge-secondary">PENDING PAYMENT</span>
-				  </li>
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-					<span class="badge badge-pill badge-warning">PAID to ADMIN</span>
-					<span class="badge badge-pill badge-success">ITEM RECIEVED</span>
-				  </li>
-				</ul>
+				<table class="table">
+			    <thead>
+			      <tr>
+			        <th>Joiners</th>
+			        <th>Qty</th>
+			        <th>Status</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr th:each="joiner : ${allJoiners}">
+			        <td class="small text-muted pr-2" scope="row" th:text="${joiner.userId}"></td>
+			        <td valign="top" ><span class="badge badge-pill badge-primary" th:text="${joiner.totalQuantity}"></td>
+			        <td valign="top" ><span class="badge badge-pill badge-info" th:text="${joiner.statusJoiner}"></td>
+			      </tr>
+			    </tbody>
+			  </table>
 			</div>
 		</div>
 	  </div>

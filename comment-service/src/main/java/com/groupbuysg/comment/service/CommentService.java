@@ -1,5 +1,8 @@
 package com.groupbuysg.comment.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,7 @@ public class CommentService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public List<Comment> getCommentById(Long productId) {
+	public List<Comment> getCommentById(long productId) {
 		log.info("Inside getCommentById method of CommnetService");
 		ResponseObject obj=new ResponseObject();
 		List<Comment> comment=commentRepository.findByProductId(productId);	
@@ -40,11 +43,15 @@ public class CommentService {
 		return commentRepository.findByProductId(productId);
 	}
 	
-	public Comment commentCreate(Long productId, Long userId, Comment comment) {
+	public Comment commentCreate(Long productId, long userId, Comment comment) {
 		log.info("Inside commentCreate method of CommnetService");
 		comment.setProductId(productId);
 		comment.setUserId(userId);
-		comment.setCommentDate("DEFAULT DATE");
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        comment.setCommentDate(dateFormat.format(date).toString());
+        
 		return commentRepository.save(comment);
 	}
 

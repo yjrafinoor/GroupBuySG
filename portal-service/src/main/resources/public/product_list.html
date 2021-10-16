@@ -1,26 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf/.org">
 <head>
-    <!--Bootstrap-->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.css">
-    
-    <!--CSS-->
-    <link rel="stylesheet" href="css/style.css"/> 
-
-    <!--Bootstrap v5.1-->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
-    -->
-	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    
-    
+    <section id="import">
+		<div th:replace="fragments/import :: import"></div>
+	</section>
 	<meta charset="UTF-8">
     <title>Product List</title>
 </head>
@@ -44,41 +27,45 @@
 						  </th>
 						  <th>ID</th>
 						  <th>PRODUCT</th>
-						  <th class="max-width">LEADER</th>
-						  <th class="max-width">STATUS LEADER</th>
-						  <th class="max-width">STATUS JOINER</th>
-						  <th class="max-width">STATUS ADMIN</th>
-						  <th class="max-width">DETAILS</th>
+						  <th class="max-width">LEADER ID</th>
+						  <th class="max-width">STATUS</th>
+						  <th class="max-width">CATEGRORY</th>
+						  <th class="max-width">ACTION</th>
 						</tr>
 					  </thead>
 					  <tbody>
-						<tr>
+						<tr th:each="product : ${listProducts}">
 						  <td class="align-middle">
 							<div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0 align-top">
 							  <input type="checkbox" class="custom-control-input" id="item-1">
 							  <label class="custom-control-label" for="item-1"></label>
 							</div>
 						  </td>
-						  <td><a href="#" class="link-primary">1</a></td>
-						  <td>Magic Pen</td>
-						  <td>khao183</td>
-						  <td>OPEN</td>
-						  <td></td>
-						  <td></td>
+						  <td class="text-nowrap align-middle" th:text="${product.productId}"></td>
+						  <td class="text-nowrap align-middle" th:text="${product.productName}"></td>
+						  <td class="text-nowrap align-middle" th:text="${product.userId}"></td>
+						  <td class="text-nowrap align-middle" th:text="${product.category}"></td>
+						  <td class="text-nowrap align-middle" th:text="${product.status}"></td>
+						  <td class="text-center align-middle">
+							<div class="btn-group align-top">
+								<a type="button" class="btn btn-outline-success" style="float: left;" th:href="@{/editProduct/{id}(id=${product.productId})}">Edit</a>
+								<a type="button" class="btn btn-outline-danger" style="float: right;" th:href="@{/deleteProduct/{id}(id=${product.productId})}">Delete</a>
+							</div>
+						  </td>
 						</tr>
 					  </tbody>
 					</table>
 				  </div>
 				  <div class="d-flex justify-content-center">
 					<ul class="pagination mt-3 mb-0">
-					  <li class="disabled page-item"><a href="#" class="page-link">鈥�</a></li>
+					  <li class="disabled page-item"><a href="#" class="page-link"><</a></li>
 					  <li class="active page-item"><a href="#" class="page-link">1</a></li>
 					  <li class="page-item"><a href="#" class="page-link">2</a></li>
 					  <li class="page-item"><a href="#" class="page-link">3</a></li>
 					  <li class="page-item"><a href="#" class="page-link">4</a></li>
 					  <li class="page-item"><a href="#" class="page-link">5</a></li>
-					  <li class="page-item"><a href="#" class="page-link">鈥�</a></li>
-					  <li class="page-item"><a href="#" class="page-link">禄</a></li>
+					  <li class="page-item"><a href="#" class="page-link">></a></li>
+					  <li class="page-item"><a href="#" class="page-link">>></a></li>
 					</ul>
 				  </div>
 				</div>	
