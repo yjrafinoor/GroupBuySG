@@ -171,7 +171,7 @@
 						<th class="small text-muted pr-2" scope="row"  valign="top">Passed to Joiner</th>
 						<td class="small text-muted pr-2">
 						  	<table>
-						  		<tbody th:each="toPass : ${toPassJoiners}">
+						  		<tbody th:each="toPass : ${joinerToReceive}">
 									<tr>
 										<td class="small text-muted pr-2">
 											<form class="form-row" th:action="@{/passToJoiner/{pid}/{uid} (pid=${toPass.productId}, uid=${toPass.userId})}" method="post">

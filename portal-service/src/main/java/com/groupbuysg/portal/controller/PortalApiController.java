@@ -215,24 +215,26 @@ log.info("HEE rejectLeader: "+userId);
 	}
 	
 	@RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
-	public ModelAndView saveProduct(@ModelAttribute Product product, Model model){
+	public String saveProduct(@ModelAttribute Product product, Model model){
 		log.info("Inside saveProduct method of PortalApiController");
 		long userId=(long) 2;
-log.info("HEE product: "+product);		
-log.info("HEE userId: "+userId);		
+log.info("HEE1 product: "+product);		
+log.info("HEE1 userId: "+userId);		
 		
 		Product newProduct = new Product();
 		newProduct = portalApiService.saveProduct(product, userId);
-		
-		List<Product> listProducts =portalApiService.getProductList();
-		model.addAttribute("listProducts",listProducts);
+        model.addAttribute("product", newProduct);
+log.info("HEE1 newProduct: "+newProduct);		
+        
+		User user = portalApiService.getUserDetails(newProduct.getUserId());
+		model.addAttribute("user",user);
 		
 		model.addAttribute("successMessage", "Create Successful");
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/editProduct/"+newProduct.getProductId());
+		modelAndView.setViewName("product_update");
 
-		return modelAndView;
+		return "product_update";
 	}
 	
 	@RequestMapping("/product_list")
@@ -327,6 +329,9 @@ log.info("HEE product: "+product);
 		
 		List<Comment> allComments = portalApiService.getComments(productId);
 		model.addAttribute("allComments",allComments);
+		
+		List<Listing> joinerToReceive = portalApiService.toPassJoiners(productId);
+		model.addAttribute("joinerToReceive",joinerToReceive);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("join");

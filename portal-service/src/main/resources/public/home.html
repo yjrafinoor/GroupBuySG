@@ -35,7 +35,12 @@
 							<p class="card-text small text-muted">
 								Create On: <small class="text-muted" th:text="${product.createdDate}"></small> <br>
 								Due Date : <small class="text-muted" th:text="${product.dueDate}"></small>
-								<a th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a></p>
+								<a th:if="${product.status} eq 'OPEN'" 
+									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a></p>
+								<a th:unless="${product.status} eq 'IN PROGRESS'" 
+									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-warning" style="float: right;">View</a></p>
+								<a th:unless="${product.status} eq 'CLOSE'" 
+									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
 						  </div>
 						</div>
 					  </div>
