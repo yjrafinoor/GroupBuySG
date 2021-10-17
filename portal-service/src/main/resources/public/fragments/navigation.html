@@ -16,9 +16,32 @@
 					<li class="nav-item"><a class="nav-link" href="/user_list">User_List (Admin)</a></li>
 					<li class="nav-item"><a class="nav-link" href="/product_list">Product_List (Admin)</a></li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0">
+				<!-- <form class="form-inline my-2 my-lg-0">
 					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>-->
+				<form class="col d-flex justify-content-end" th:action="@{/}" method="post">
+					  <button id="signout-button"  class="btn btn-primary" onClick="signOut()">Sign Out</button>
+				</form>
+			</div>
+		</nav>
+		<!-- Check if errorMessage is not null and not empty -->       
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" /> 
+        <div th:if="${successMessage}" th:utext="${successMessage}" class="alert alert-success" role="alert" /> 
+	</div>
+</div>
+
+<div th:fragment="Homenavbar">
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/home">Group Buy</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+	
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<form class="col d-flex justify-content-end" th:action="@{/}" method="post">
+					  <button id="signout-button"  class="btn btn-primary" onClick="signOut()">Sign Out</button>
 				</form>
 			</div>
 		</nav>

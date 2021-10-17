@@ -30,6 +30,24 @@ public class PortalApiController {
 	@Autowired
 	PortalApiService portalApiService;
 	
+	@RequestMapping(value = "/logInViaGoogle", method = RequestMethod.POST)
+	public ModelAndView logInViaGoogle (@ModelAttribute User user, Model model){
+		log.info("Inside logInViaGoogle method of PortalApiController");
+log.info("Hee logInViaGoogle1: "+user+";"+model);		
+		User userResponse =  portalApiService.logInViaGoogle(user);
+log.info("Hee logInViaGoogle2: "+userResponse);		
+
+		List<Product> listProducts =portalApiService.getProductList();
+		model.addAttribute("listProducts",listProducts);
+		
+		model.addAttribute("successMessage", "Login Successful");
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("home");
+		
+		return modelAndView;
+	}
+	
 	@RequestMapping("/")	
 	public String indexpage (Model model){
 		log.info("Inside indexpage method of PortalApiController");
@@ -70,7 +88,7 @@ public class PortalApiController {
 		List<User> listUsers =portalApiService.getUserList();
 		modelAndView.addObject("listUsers",listUsers);
 		
-		model.addAttribute("successMessage", "Create Successful");
+		model.addAttribute("successMessage", "Sigup Successful");
 		
 
 		return modelAndView;
