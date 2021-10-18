@@ -33,19 +33,27 @@ public class PortalApiController {
 	@RequestMapping(value = "/logInViaGoogle", method = RequestMethod.POST)
 	public ModelAndView logInViaGoogle (@ModelAttribute User user, Model model){
 		log.info("Inside logInViaGoogle method of PortalApiController");
-log.info("Hee logInViaGoogle1: "+user+";"+model);		
+		log.info("Hee logInViaGoogle1: "+user+";"+model);		
 		User userResponse =  portalApiService.logInViaGoogle(user);
-log.info("Hee logInViaGoogle2: "+userResponse);		
+		log.info("Hee logInViaGoogle2: "+userResponse);		
 
 		List<Product> listProducts =portalApiService.getProductList();
 		model.addAttribute("listProducts",listProducts);
 		
-		model.addAttribute("successMessage", "Login Successful");
-		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("home");
+		
+		if(userResponse!=null){
+			model.addAttribute("successMessage", "Login Successful");
+			modelAndView.setViewName("home");
+		}
+		
+		if (userResponse==null){
+			model.addAttribute("errorMessage", "Login Failed");
+			modelAndView.setViewName("index");
+		}
 		
 		return modelAndView;
+		
 	}
 	
 	@RequestMapping("/")	
