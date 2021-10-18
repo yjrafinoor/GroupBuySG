@@ -17,8 +17,8 @@
 					<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">OPEN</a>
 					<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">IN PROGRESS</a>
 					<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">CLOSED</a>
-					<div class="col d-flex justify-content-end">
-						<a type="button" class="btn btn-info pull-right" href="/product_create">Create Product</a>
+					<div class="col d-flex justify-content-end" th:if="${session.user['role']} eq 'LEADER'" >
+							<a type="button" class="btn btn-info pull-right" href="/product_create">Create Product</a>
 					</div>
 				  </div>
 				</nav>
@@ -42,12 +42,17 @@
 							<p class="card-text small text-muted">
 								Create On: <small class="text-muted" th:text="${product.createdDate}"></small> <br>
 								Due Date : <small class="text-muted" th:text="${product.dueDate}"></small>
-								<a th:if="${product.status} eq 'OPEN'" 
-									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a>
-								<a th:if="${product.status} eq 'IN PROGRESS'" 
-									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-warning" style="float: right;">View</a>
-								<a th:if="${product.status} eq 'CLOSED'" 
-									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
+								<div th:unless="${product.userId} eq ${session.user['userId']}" >
+									<a th:if="${product.status} eq 'OPEN'" 
+										th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+								</div>
+								<div th:if="${product.userId} eq ${session.user['userId']}" >
+									<a th:if="${product.status} eq 'OPEN'" 
+										th:href="@{/editProduct/{id}(id=${product.productId})}" class="btn btn-outline-success" style="float: right;">Edit</a>
+									<a th:if="${product.status} eq 'OPEN'" 
+										th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">View</a>
+								</div>
+							</p>
 						  </div>
 						</div>
 					  </div>

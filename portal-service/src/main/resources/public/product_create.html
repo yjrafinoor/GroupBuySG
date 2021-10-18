@@ -14,8 +14,7 @@
 	<section id="addProduct">
         <div class="container">
 			<h2>Product Create</h2>
-			<!-- <form class="form" th:action="@{/saveProduct/{uid}(uid=${myid})}" method="post"> -->
-			<form class="form" th:action="@{/saveProduct}" method="post">
+			<form class="form" th:action="@{/saveProduct/{uid} (uid=${session.user['userId']})}" method="post">
 			<div class="row">
 			  <div class="col">
 				<div class="row">

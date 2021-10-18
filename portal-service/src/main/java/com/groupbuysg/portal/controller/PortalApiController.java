@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,11 +62,57 @@ public class PortalApiController {
 		
 	}
 	
+	@RequestMapping("/heeLogin")
+	public ModelAndView heeLogin (@ModelAttribute User user, Model model, HttpSession session){
+		log.info("Inside heeLogin method of PortalApiController");
+		log.info("Hee heeLogin: "+user+" ;m: "+model+" ;s: "+session);	
+
+		User userInfo = portalApiService.verifiedLogin(user.getUserName(), user.getPassword());
+		log.info("Hee userInfo: "+userInfo);	
+		ModelAndView modelAndView = new ModelAndView();
+		
+		if(userInfo==null) {
+			log.info("Hee heeLogin: FAILED");
+			model.addAttribute("errorMessage", "Login Failed");
+			modelAndView.setViewName("index");
+		}
+		else {
+			List<Product> listProductsOpen =portalApiService.getProductListOpen();
+			model.addAttribute("listProductsOpen",listProductsOpen);
+	log.info("Hee OPEN: "+listProductsOpen);
+			List<Product> listProductsProgress =portalApiService.getProductListProgess();
+			model.addAttribute("listProductsProgress",listProductsProgress);
+	log.info("Hee OPEN: "+listProductsProgress);
+			List<Product> listProductsClose =portalApiService.getProductListClose();
+			model.addAttribute("listProductsClose",listProductsClose);
+	log.info("Hee OPEN: "+listProductsClose);
+	
+			model.addAttribute("successMessage", "Login Successful");
+			modelAndView.setViewName("home");
+			session.setAttribute("user", userInfo);
+		}
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping("/heeLogout")
+	public ModelAndView heeLogout (Model model, HttpSession session){
+		log.info("Inside heeLogout method of PortalApiController");
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+		session.removeAttribute("user");
+		
+		model.addAttribute("successMessage", "Logout Successful");
+		modelAndView.setViewName("index");
+		
+		return modelAndView;
+	}
+	
 	@RequestMapping("/")	
 	public String indexpage (Model model){
 		log.info("Inside indexpage method of PortalApiController");
 		//List<User> userList =portalApiService.getUserList();
-
 		return "index";
 	}
 	
@@ -116,7 +164,7 @@ log.info("Hee OPEN: "+listProductsClose);
 	@RequestMapping(path = {"/editUser/{id}"})
     public String editUserPage(Model model, @PathVariable("id") long userId) {
 		log.info("Inside editUserPage method of PortalApiController");
-
+		
 		try {
 	        User user = portalApiService.getUserById(userId);
 	        model.addAttribute("user", user);
@@ -233,10 +281,10 @@ log.info("HEE rejectLeader: "+userId);
 		return "product_create";
 	}
 	
-	@RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
-	public String saveProduct(@ModelAttribute Product product, Model model){
+	@RequestMapping(value = "/saveProduct/{uid}", method = RequestMethod.POST)
+	public String saveProduct(@ModelAttribute Product product, @PathVariable("uid") long userId, Model model){
 		log.info("Inside saveProduct method of PortalApiController");
-		long userId=(long) 2;
+
 log.info("HEE1 product: "+product);		
 log.info("HEE1 userId: "+userId);		
 		
@@ -439,11 +487,9 @@ log.info("HEE leaderReceived90: "+productId);
 		return new RedirectView("/join/"+productId);
 	}
 
-	@RequestMapping(value = "/postComment/{pid}", method = RequestMethod.POST)
-	public RedirectView postComment(@ModelAttribute Comment comment, @PathVariable("pid") long productId, Model model){
+	@RequestMapping(value = "/postComment/{pid}/{uid}", method = RequestMethod.POST)
+	public RedirectView postComment(@ModelAttribute Comment comment, @PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
 		log.info("Inside postComment method of PortalApiController");
-		
-		long userId = 2;
 		
 log.info("HEE postComment: "+productId);				
 		portalApiService.postComment(comment, productId, userId);

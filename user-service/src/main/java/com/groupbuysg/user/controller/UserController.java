@@ -74,6 +74,12 @@ public class UserController {
 		return userService.deleteUserById(UserId);
 	}
 	
+	@GetMapping("/findByUserName/{uid}")
+	public User findByUserName(@PathVariable("uid") String userName){
+		log.info("Inside deleteUserById method of UserController");
+		return userService.findByUserName(userName);
+	}
+	
 
     @GetMapping("/health")
 	public ResponseEntity<?> healthCheck()	{

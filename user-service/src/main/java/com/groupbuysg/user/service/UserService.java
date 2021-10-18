@@ -128,6 +128,11 @@ log.info("Hee reviewLeader: "+userId +" : "+code);
 		return userRepository.save(user);
 	}
 	
+	public User findByUserName(String userName) {
+		log.info("Inside findByUserName method of UserService");
+		return userRepository.findByUserName(userName);
+	}
+	
 /*	
 	public User deleteUserById(long userId) {
 		log.info("Inside deleteUserbyId method of UserService");

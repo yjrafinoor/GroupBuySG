@@ -353,7 +353,7 @@
 					<div class="panel panel-info">
 						<h2>Comments</h2>
 						<div class="panel-body">
-							<form class="form-row" th:action="@{/postComment/{pid} (pid=${product.productId})}" method="post">
+							<form class="form-row" th:action="@{/postComment/{pid}/{uid} (pid=${product.productId}, uid=${session.user['userId']})}" method="post">
 								<textarea class="form-control" placeholder="write a comment..." rows="3" name="commentText" required></textarea>
 								<br>
 								<div class="col d-flex justify-content-end">

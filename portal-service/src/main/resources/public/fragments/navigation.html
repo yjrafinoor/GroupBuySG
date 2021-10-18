@@ -12,17 +12,22 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Edit Profile</a></li>
-					<li class="nav-item"><a class="nav-link" href="/user_list">User_List (Admin)</a></li>
-					<li class="nav-item"><a class="nav-link" href="/product_list">Product_List (Admin)</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/editUser/{id} (id=${session.user['userId']})}">Edit Profile</a></li>
+					<li class="nav-item" th:if="${session.user['role']} eq 'ADMIN'">
+						<a class="nav-link" href="/user_list">User_List (Admin)</a></li>
+					<li class="nav-item" th:if="${session.user['role']} eq 'ADMIN'">
+						<a class="nav-link" href="/product_list">Product_List (Admin)</a></li>
 				</ul>
 				<!-- <form class="form-inline my-2 my-lg-0">
 					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form>-->
-				<div class="col d-flex justify-content-end">
+				<!--<div class="col d-flex justify-content-end">
 					<button id="signout-button"  class="btn btn-primary" onClick="signOut()">Sign Out</button>
-				</div>
+				</div>-->
+				<form class="col d-flex justify-content-end" th:action="@{/heeLogout}" method="post">
+					<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Sign Out</button>
+				</form>
 			</div>
 		</nav>
 		<!-- Check if errorMessage is not null and not empty -->       
@@ -38,9 +43,14 @@
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="col d-flex justify-content-end">
+			<form class="col d-flex justify-content-end" th:action="@{/heeLogin}" method="post">
+				<input class="form-control col-md-4" type="text" name="userName" required>
+				<input class="form-control col-md-4" type="text" name="password" required>
+				<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">SignIn</button>
+			</form>
+			<!--<div class="col d-flex justify-content-end">
 				<button id="signout-button" class="btn btn-primary" onClick="signOut()">Sign Out</button>
-			</div>
+			</div>--> 
 		</nav>
 		<!-- Check if errorMessage is not null and not empty -->       
         <div th:if="${errorMessage}" th:utext="${errorMessage}" class="alert alert-success" role="alert" />

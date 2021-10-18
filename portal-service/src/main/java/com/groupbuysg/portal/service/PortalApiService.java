@@ -552,5 +552,20 @@ log.info("HEE joinerReceived: "+productId + " : "+userId);
 
 		return null;//new User();
 	}
+	
+	public User verifiedLogin(String userName, String password) {
+		log.info("Inside verifiedLogin method of PortalApiService");
+		
+		User user = new User();
+		user = restTemplate.getForObject("http://USER-SERVICE/users/findByUserName/"+userName, 
+				User.class);
+		
+		if(user!=null) {
+			if(user.getPassword().equals(password)) {
+				return user;
+			}
+		}
+		return null;
+	}
 
 }
