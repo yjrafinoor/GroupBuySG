@@ -14,23 +14,30 @@
             <div class="container">
 				<nav>
 				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
-					<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Active</a>
-					<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Past</a>
+					<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">OPEN</a>
+					<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">IN PROGRESS</a>
+					<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">CLOSED</a>
 					<div class="col d-flex justify-content-end">
-						<button type="button" class="btn btn-info pull-right ">Create Product</button>
+						<a type="button" class="btn btn-info pull-right" href="/product_create">Create Product</a>
 					</div>
 				  </div>
 				</nav>
 				<div class="tab-content" id="nav-tabContent">
 				</p>
 				  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-					<div class="row" th:each="product : ${listProducts}">
+					<div class="row" th:each="product : ${listProductsOpen}">
 					  <div class="col-sm-6">
 						<div class="card">
 						  <div class="card-body">
 							<h5 class="card-title" th:text="${product.productName}" ></h5>
-							<p> <span class="badge badge-pill badge-info" th:text="${product.status}"></span></p>
+							<p> 
+								<span class="badge badge-pill badge-info" th:if="${product.status} eq 'OPEN'" 
+									th:text="${product.status}"></span>
+								<span class="badge badge-pill badge-warning" th:if="${product.status} eq 'IN PROGRESS'" 
+									th:text="${product.status}"></span>
+								<span class="badge badge-pill badge-secondary" th:if="${product.status} eq 'CLOSED'"
+									th:text="${product.status}"></span>
+							</p>
 							<p class="card-text" th:text="${product.description}"></p>
 							<p class="card-text small text-muted">
 								Create On: <small class="text-muted" th:text="${product.createdDate}"></small> <br>
@@ -39,7 +46,7 @@
 									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a>
 								<a th:if="${product.status} eq 'IN PROGRESS'" 
 									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-warning" style="float: right;">View</a>
-								<a th:if="${product.status} eq 'CLOSE'" 
+								<a th:if="${product.status} eq 'CLOSED'" 
 									th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
 						  </div>
 						</div>
@@ -56,8 +63,84 @@
 					   -->
 					</div>					
 				  </div>
-				  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-				  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+				  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+				  <div class="row" th:each="productP : ${listProductsProgress}">
+					  <div class="col-sm-6">
+						<div class="card">
+						  <div class="card-body">
+							<h5 class="card-title" th:text="${productP.productName}" ></h5>
+							<p> 
+								<span class="badge badge-pill badge-info" th:if="${productP.status} eq 'OPEN'" 
+									th:text="${productP.status}"></span>
+								<span class="badge badge-pill badge-warning" th:if="${productP.status} eq 'IN PROGRESS'" 
+									th:text="${productP.status}"></span>
+								<span class="badge badge-pill badge-secondary" th:if="${productP.status} eq 'CLOSED'"
+									th:text="${productP.status}"></span>
+							</p>
+							<p class="card-text" th:text="${productP.description}"></p>
+							<p class="card-text small text-muted">
+								Create On: <small class="text-muted" th:text="${productP.createdDate}"></small> <br>
+								Due Date : <small class="text-muted" th:text="${productP.dueDate}"></small>
+								<a th:if="${productP.status} eq 'OPEN'" 
+									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+								<a th:if="${productP.status} eq 'IN PROGRESS'" 
+									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-warning" style="float: right;">View</a>
+								<a th:if="${productP.status} eq 'CLOSED'" 
+									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
+						  </div>
+						</div>
+					  </div>
+					  <!-- <div class="col-sm-6">
+						<div class="card">
+						  <div class="card-body">
+							<h5 class="card-title">Special title treatment</h5>
+							<p class="card-text">With supporting text below as a natural lead-in to additional content.lead-in to additional content.</p>
+							<p class="card-text"><small class="text-muted">Due Date: 99 DEC 9999</small><a href="#" class="btn btn-primary" style="float: right;">Join</a></p>
+						  </div>
+						</div>
+					  </div>
+					   -->
+					</div>
+				  </div>
+				  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+					<div class="row" th:each="productC : ${listProductsClose}">
+					  <div class="col-sm-6">
+						<div class="card">
+						  <div class="card-body">
+							<h5 class="card-title" th:text="${productC.productName}" ></h5>
+							<p> 
+								<span class="badge badge-pill badge-info" th:if="${productC.status} eq 'OPEN'" 
+									th:text="${productC.status}"></span>
+								<span class="badge badge-pill badge-warning" th:if="${productC.status} eq 'IN PROGRESS'" 
+									th:text="${productC.status}"></span>
+								<span class="badge badge-pill badge-secondary" th:if="${productC.status} eq 'CLOSED'"
+									th:text="${productC.status}"></span>
+							</p>
+							<p class="card-text" th:text="${productC.description}"></p>
+							<p class="card-text small text-muted">
+								Create On: <small class="text-muted" th:text="${productC.createdDate}"></small> <br>
+								Due Date : <small class="text-muted" th:text="${productC.dueDate}"></small>
+								<a th:if="${productC.status} eq 'OPEN'" 
+									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+								<a th:if="${productC.status} eq 'IN PROGRESS'" 
+									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-warning" style="float: right;">View</a>
+								<a th:if="${productC.status} eq 'CLOSED'" 
+									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
+						  </div>
+						</div>
+					  </div>
+					  <!-- <div class="col-sm-6">
+						<div class="card">
+						  <div class="card-body">
+							<h5 class="card-title">Special title treatment</h5>
+							<p class="card-text">With supporting text below as a natural lead-in to additional content.lead-in to additional content.</p>
+							<p class="card-text"><small class="text-muted">Due Date: 99 DEC 9999</small><a href="#" class="btn btn-primary" style="float: right;">Join</a></p>
+						  </div>
+						</div>
+					  </div>
+					   -->
+					</div>
+				  </div>
 				</div>
 			</div>
 		</section>

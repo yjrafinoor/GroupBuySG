@@ -20,7 +20,12 @@
 					<tr>
 						<th class="small text-muted pr-2" scope="row">Status</th>
 						<td>
-							<span class="badge badge-pill badge-info" th:text="${product.status}"></span>
+							<span class="badge badge-pill badge-info" th:if="${product.status} eq 'OPEN'" 
+								th:text="${product.status}"></span>
+							<span class="badge badge-pill badge-warning" th:if="${product.status} eq 'IN PROGRESS'" 
+								th:text="${product.status}"></span>
+							<span class="badge badge-pill badge-secondary" th:if="${product.status} eq 'CLOSED'"
+								th:text="${product.status}"></span>
 						</td>
 					</tr>
 					<tr>
@@ -289,11 +294,11 @@
 					<div th:if="${leader.statusLeader} eq 'OPEN'">
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Join for this product</th>
-						<td class="small text-muted pr-2" >
-							<div class="form-row">
-								<input class="form-control col-md-4" type="text" placeholder="Qty">
+						<td class="small text-muted pr-2">
+							<form class="form-row" th:action="@{/joinProduct/{id} (id=${leader.productId})}" method="post">
+								<input class="form-control col-md-4" type="text" placeholder="Qty" name="totalQuantity" required>
 								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Join</button>
-							</div>
+							</form>
 						</td>
 					</tr>
 					</div>
@@ -311,9 +316,9 @@
 					<tr>
 						<th></th>
 						<td class="small text-muted pr-2">
-							<div class="form-row">
-								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Paid</button>
-							</div>
+							<form class="form-row" th:action="@{/joinerPay/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">To Pay</button>
+							</form>
 						</td>
 					</tr>
 					</div>
@@ -322,10 +327,12 @@
 					<tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Received Item</th>
 						<td class="small text-muted pr-2">
-							<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Confirm</button>
+							<form class="form-row" th:action="@{/joinerReceived/{id} (id=${leader.productId})}" method="post">
+								<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Received</button>
+							</form>
 						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<th class="small text-muted pr-2" scope="row" valign="top">Rate for Leader</th>
 						<td class="small text-muted pr-2">
 						<div class="form-row">
@@ -333,7 +340,7 @@
 							<button type="submit" class="btn btn-outline-primary btn-sm" style="float: left;">Rate</button>
 						</div>
 						</td>
-					</tr>
+					</tr>-->
 					</div>
 			    </table>
 			  </div>

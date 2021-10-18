@@ -1,6 +1,9 @@
 package com.groupbuysg.listing.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,12 @@ public class ListingService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	public String getCurrentDate() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date).toString();
+	}
+	
 	public List<Listing> findAll(){
 		log.info("Inside findAll method of ListingService");
 		return listingRepository.findAll();
@@ -48,6 +57,7 @@ public class ListingService {
 		listing.setStatusAdmin("OPEN");
 		listing.setIsLeader(null);
 		listing.setAllJoinerPaid(false);
+		listing.setDateJoin(getCurrentDate());
 		return listingRepository.save(listing);
 	}
 	
@@ -58,28 +68,45 @@ public class ListingService {
 		listing.setTotalQuantity(0);
 		listing.setStatusLeader("OPEN");
 		listing.setIsLeader(true);
+		listing.setDateJoin(getCurrentDate());
 		return listingRepository.save(listing);
 	}
 
 	public Listing createJoiner(Listing listing, long productId, long userId) {
 		log.info("Inside createJoiner method of ListingService");
-		listing.setProductId(productId);
-		listing.setUserId(userId);
-		listing.setIsLeader(false);
-		listing.setStatusJoiner("JOINED");
-		listingRepository.save(listing);
 		
 		int qty = listing.getTotalQuantity();
 		Listing leader = new Listing();
 		int leaderQty = 0;
-	
+		
 		leader = getLeader(productId);
 		leaderQty=leader.getTotalQuantity();
-		leaderQty+=qty;
+		
+		Listing joinerDetails = getListingJoiner(productId, userId);
+		
+		if(joinerDetails.getUserId()!=0L && joinerDetails.getUserId()==userId) {
+			log.info("Hee joinerDetails!=null: "+joinerDetails);
+			
+			leaderQty=leaderQty-joinerDetails.getTotalQuantity()+listing.getTotalQuantity();
+			
+			joinerDetails.setTotalQuantity(listing.getTotalQuantity());
+			joinerDetails.setDateJoin(getCurrentDate());
+			listingRepository.save(joinerDetails);
+		}
+		else {
+			log.info("Hee joinerDetails==null:");
+			listing.setProductId(productId);
+			listing.setUserId(userId);
+			listing.setIsLeader(false);
+			listing.setStatusJoiner("JOINED");
+			listing.setDateJoin(getCurrentDate());
+			listingRepository.save(listing);
+			leaderQty+=qty;
+		}
+
 		leader.setTotalQuantity(leaderQty);
-		
 		listingRepository.save(leader);
-		
+
 		return listing;
 	}
 	
@@ -113,6 +140,7 @@ public class ListingService {
 	
 		leader.setTotalAmount(listingDetails.getTotalAmount());
 		leader.setStatusLeader("CONFIRMED, PENDING JOINERs PAYMENT");
+		leader.setDateLeaderClose(getCurrentDate());
 		listingRepository.save(leader);
 		
 		admin.setTotalAmount(listingDetails.getTotalAmount());
@@ -204,16 +232,18 @@ public class ListingService {
 	public List<Listing> getListingJoiners (long productId) {
 		log.info("Inside getListingJoiners method of ListingService");
 		List<Listing> joiners = new ArrayList<>();
-
+		
 		//Start: get Joiners
 		List<Listing> listings = listingRepository.findByProductId(productId);
 		if(listings.size()>0) {
 			for(int i=0; i<listings.size(); i++) {
 				if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true) {
 					joiners.add(listings.get(i));
+log.info("Hee getListingJoiners1: "+listings.get(i));
 				}
 			}
 		}
+		log.info("Hee getListingJoiners2: "+joiners);
 		return joiners;
 	}
 	
@@ -297,6 +327,8 @@ log.info("HEE countPAID==countJoiners: "+ i + " : " +countPAID+" ; "+countJoiner
 					if(code==4) {
 						updateLeader(productId, 6);//leaderCode 6: SCHEDULING TO MEET JOINERs
 						if(allJoiners.get(i).getStatusJoiner().equals("PASS OVER")) {
+							allJoiners.get(i).setDateLeaderPassOver(getCurrentDate());
+							listingRepository.save(allJoiners.get(i));
 							countPassOver+=1;
 						}
 log.info("HEE countPassOver==countJoiners: "+ i + " : " +countPassOver+" ; "+countJoiners);	
@@ -334,6 +366,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 					
 					joiner = allJoiners.get(i);
 					joiner.setStatusJoiner("PAID");
+					joiner.setDateJoinerPaid(getCurrentDate());
 					listingRepository.save(joiner);
 					
 					//checkAllJoinerPaid(productId);
@@ -371,6 +404,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		}
 		if(adminCode==3) {
 			admin.setStatusAdmin("RELEASED 10% TO LEADER");
+			admin.setDateAmount90(getCurrentDate());
 			listingRepository.save(admin);
 			updateLeader(productId, 2);
 		}
@@ -391,6 +425,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		}
 		if(adminCode==7) {
 			admin.setStatusAdmin("RELEASED REMAIND AMOUNT TO LEADER");
+			admin.setDateAmount90(getCurrentDate());
 			listingRepository.save(admin);
 			updateLeader(productId, 9); //leaderCode 9: ADMIN RELEASED REMIND AMOUNT
 		}
@@ -419,14 +454,17 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		}
 		if(leaderCode==3) {
 			leader.setStatusLeader("RECEIVED 10% FROM ADMIN");
+			leader.setDateAmount10(getCurrentDate());
 			listingRepository.save(leader);
 		}
 		if(leaderCode==4) {
 			leader.setStatusLeader("MAKE ORDER and PENDING SHIPPING");
+			leader.setDateLeaderOrder(getCurrentDate());
 			listingRepository.save(leader);
 		}
 		if(leaderCode==5) {
 			leader.setStatusLeader("RECEIVED PARCEL, TO MEET JOINERs");
+			leader.setDateReceivedItem(getCurrentDate());
 			listingRepository.save(leader);
 			updateJoinerStatus(productId, 0.00, 3);
 		}
@@ -456,6 +494,7 @@ log.info("Hee leader leader2: "+leader);
 		if(leaderCode==10) {
 			//leader.setStatusLeader("RECEIVED 90% FROM ADMIN");
 			leader.setStatusLeader("COMPLETED");
+			leader.setDateAmount90(getCurrentDate());
 			listingRepository.save(leader);
 			updateAdmin(productId, 8); //adminCode=8
 			
@@ -491,6 +530,7 @@ log.info("Hee leader leader2: "+leader);
 					
 					joiner = allJoiners.get(i);
 					joiner.setStatusJoiner("RECEIVED");
+					joiner.setDateReceivedItem(getCurrentDate());
 					listingRepository.save(joiner);
 				}
 			}

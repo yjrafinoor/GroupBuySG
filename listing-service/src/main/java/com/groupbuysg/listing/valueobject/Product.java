@@ -32,6 +32,7 @@ public class Product {
 	private String thirdQuantity;
 	private String thirdPrice;
 	private String createdDate;
+	private String closeDate;
 	private long userId;
 	
 

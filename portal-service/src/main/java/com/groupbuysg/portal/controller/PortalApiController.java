@@ -37,8 +37,12 @@ public class PortalApiController {
 		User userResponse =  portalApiService.logInViaGoogle(user);
 		log.info("Hee logInViaGoogle2: "+userResponse);		
 
-		List<Product> listProducts =portalApiService.getProductList();
-		model.addAttribute("listProducts",listProducts);
+		List<Product> listProductsOpen =portalApiService.getProductListOpen();
+		model.addAttribute("listProductsOpen",listProductsOpen);
+		List<Product> listProductsProgress =portalApiService.getProductListProgess();
+		model.addAttribute("listProductsProgress",listProductsProgress);
+		List<Product> listProductsClose =portalApiService.getProductListClose();
+		model.addAttribute("listProductsClose",listProductsClose);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		
@@ -69,8 +73,15 @@ public class PortalApiController {
 		log.info("Inside homepage method of PortalApiController");
 		//List<User> userList =portalApiService.getUserList();
 
-		List<Product> listProducts =portalApiService.getProductList();
-		model.addAttribute("listProducts",listProducts);
+		List<Product> listProductsOpen =portalApiService.getProductListOpen();
+		model.addAttribute("listProductsOpen",listProductsOpen);
+log.info("Hee OPEN: "+listProductsOpen);
+		List<Product> listProductsProgress =portalApiService.getProductListProgess();
+		model.addAttribute("listProductsProgress",listProductsProgress);
+log.info("Hee OPEN: "+listProductsProgress);
+		List<Product> listProductsClose =portalApiService.getProductListClose();
+		model.addAttribute("listProductsClose",listProductsClose);
+log.info("Hee OPEN: "+listProductsClose);
 		
 		return "home";
 	}
@@ -334,6 +345,7 @@ log.info("HEE product: "+product);
 		
 		List<Listing> allJoiners = portalApiService.getJoiners(productId);
 		model.addAttribute("allJoiners",allJoiners);
+log.info("HEE allJoiners: "+allJoiners);
 		
 		List<Comment> allComments = portalApiService.getComments(productId);
 		model.addAttribute("allComments",allComments);
@@ -438,4 +450,43 @@ log.info("HEE postComment: "+productId);
 
 		return new RedirectView("/join/"+productId);
 	}
+	
+	
+	@RequestMapping(value = "/joinProduct/{pid}", method = RequestMethod.POST)
+	public RedirectView joinProduct(@ModelAttribute Listing listing, @PathVariable("pid") long productId, Model model){
+		log.info("Inside joinProduct method of PortalApiController");
+		
+		long userId = 3;
+		
+log.info("HEE postComment: "+productId);				
+		portalApiService.joinProduct(listing, productId, userId);
+
+		return new RedirectView("/join/"+productId);
+	}
+	
+	
+	@RequestMapping(value = "/joinerPay/{pid}", method = RequestMethod.POST)
+	public RedirectView joinerPay(@PathVariable("pid") long productId, Model model){
+		log.info("Inside joinerPay method of PortalApiController");
+		
+		long userId = 3;
+		
+log.info("HEE joinerPay: "+productId);				
+		portalApiService.joinerPay(productId, userId);
+
+		return new RedirectView("/join/"+productId);
+	}
+	
+	@RequestMapping(value = "/joinerReceived/{pid}", method = RequestMethod.POST)
+	public RedirectView joinerReceived(@PathVariable("pid") long productId, Model model){
+		log.info("Inside joinerReceived method of PortalApiController");
+		
+		long userId = 3;
+		
+log.info("HEE joinerReceived: "+productId);				
+		portalApiService.joinerReceived(productId, userId);
+
+		return new RedirectView("/join/"+productId);
+	}
+	
 }

@@ -32,6 +32,24 @@ public class ProductController {
 		return productService.itemsList();
 	}
 	
+	@GetMapping("/openList")
+	public List<Product> itemsListOpen (){
+		log.info("Inside itemsListOpen method of ProductController");
+		return productService.itemsListOpen();
+	}
+	
+	@GetMapping("/progressList")
+	public List<Product> itemsListProgress (){
+		log.info("Inside itemsListProgress method of ProductController");
+		return productService.itemsListProgress();
+	}
+	
+	@GetMapping("/closeList")
+	public List<Product> itemsListClose (){
+		log.info("Inside itemsListClose method of ProductController");
+		return productService.itemsListClose();
+	}
+	
 	@PostMapping("/create/{uid}")
 	public Product itemCreate (@RequestBody Product product, @PathVariable("uid") long userId){
 		log.info("Inside itemCreate method of ProductController");

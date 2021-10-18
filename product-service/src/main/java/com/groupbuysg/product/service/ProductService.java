@@ -2,6 +2,7 @@ package com.groupbuysg.product.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,52 @@ public class ProductService {
 	public List<Product> itemsList(){
 		log.info("Inside itemsList method of ProductService");
 		return productRepository.findAll();
+	}
+	
+	public List<Product> itemsListOpen(){
+		log.info("Inside itemsListOpen method of ProductService");
+		
+		List<Product> products = productRepository.findAll();
+		List<Product> productsOpen = new ArrayList<>();
+		
+		if(products.size()>0) {
+			for(int i=0;i<products.size();i++) {
+				if(products.get(i).getStatus().equals("OPEN")) {
+					productsOpen.add(products.get(i));
+				}
+			}
+		}
+		return productsOpen;
+	}
+	
+	public List<Product> itemsListProgress(){
+		log.info("Inside itemsListProgress method of ProductService");
+		List<Product> products = productRepository.findAll();
+		List<Product> productsProgress = new ArrayList<>();
+		
+		if(products.size()>0) {
+			for(int i=0;i<products.size();i++) {
+				if(products.get(i).getStatus().equals("IN PROGRESS")) {
+					productsProgress.add(products.get(i));
+				}
+			}
+		}
+		return productsProgress;
+	}
+	
+	public List<Product> itemsListClose(){
+		log.info("Inside itemsListClose method of ProductService");
+		List<Product> products = productRepository.findAll();
+		List<Product> productsClosed = new ArrayList<>();
+		
+		if(products.size()>0) {
+			for(int i=0;i<products.size();i++) {
+				if(products.get(i).getStatus().equals("CLOSED")) {
+					productsClosed.add(products.get(i));
+				}
+			}
+		}
+		return productsClosed;
 	}
 	
 	public Product itemCreate(Product product, long userId) {
@@ -110,6 +157,10 @@ public class ProductService {
 		
 		if(code==2) {
 			product.setStatus("CLOSED");
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        Date date = new Date();
+	        product.setCloseDate(dateFormat.format(date).toString());
 		}
 		return productRepository.save(product);
 	}

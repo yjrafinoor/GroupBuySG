@@ -191,6 +191,34 @@ log.info("HEE requestLeaderService: "+userId);
 		return Arrays.asList(productResponse);
 	}
 	
+	public List<Product> getProductListOpen(){
+		log.info("Inside getProductListOpen method of PortalApiService");
+		
+		Product[] productResponse =  restTemplate.getForObject("http://PRODUCT-SERVICE/products/openList/"
+				, Product[].class);
+		
+		log.info(String.valueOf(productResponse.length));
+		return Arrays.asList(productResponse);
+	}
+	
+	public List<Product> getProductListProgess(){
+		log.info("Inside getProductListProgess method of PortalApiService");
+		Product[] productResponse =  restTemplate.getForObject("http://PRODUCT-SERVICE/products/progressList/"
+				, Product[].class);
+		
+		log.info(String.valueOf(productResponse.length));
+		return Arrays.asList(productResponse);
+	}
+	
+	public List<Product> getProductListClose(){
+		log.info("Inside getProductListClose method of PortalApiService");
+		Product[] productResponse =  restTemplate.getForObject("http://PRODUCT-SERVICE/products/closeList/"
+				, Product[].class);
+		
+		log.info(String.valueOf(productResponse.length));
+		return Arrays.asList(productResponse);
+	}
+	
 	
 	public Product saveProduct(@RequestBody Product product, long userId) {
 		log.info("Inside saveProduct method of PortalApiService");
@@ -279,7 +307,7 @@ log.info("HEE requestLeaderService: "+userId);
 		log.info("Inside getJoiners method of PortalApiService");
 		Listing[] joinersResponse =  restTemplate.getForObject("http://LISTING-SERVICE/listings/getJoiners/"+productId
 				, Listing[].class);
-		
+log.info("Hee getJoinersLServives: "+joinersResponse);		
 		log.info(String.valueOf(joinersResponse.length));
 		return Arrays.asList(joinersResponse);
 
@@ -431,6 +459,81 @@ log.info("HEE postCommentService: "+productId + " : "+userId);
 				"http://COMMENT-SERVICE/comments/create/"+productId+"/"+userId,
 				request,
 				Comment.class);
+	}
+	
+	public Listing joinProduct(@RequestBody Listing listingDetails, long productId, long userId) {
+		log.info("Inside joinProduct method of PortalApiService");
+		
+		String joinRequest ="";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		try{
+		ObjectMapper objectMapper = new ObjectMapper();		
+		joinRequest = objectMapper.writeValueAsString(listingDetails);
+		}
+		catch(Exception e){
+			log.info("fail Request: "+ joinRequest);
+			
+		}
+		HttpEntity<String> request = new HttpEntity<>(joinRequest,headers);
+				
+		log.info("Request: "+ request);
+		
+		return restTemplate.postForObject(
+				"http://LISTING-SERVICE/listings/createJoiner/"+productId+"/"+userId,
+				request,
+				Listing.class);
+	}
+	
+	public void joinerPay(long productId, long userId) {
+		log.info("Inside joinerPay method of PortalApiService");
+log.info("HEE joinerPay: "+productId + " : "+userId);	
+		
+		String listingRequest ="";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		try{
+		//ObjectMapper objectMapper = new ObjectMapper();		
+		//listingRequest = objectMapper.writeValueAsString(listingDetails);
+		}
+		catch(Exception e){
+			log.info("fail Request: "+ listingRequest);
+		}
+		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+				
+		log.info("Request: "+ request);
+		
+		restTemplate.postForObject(
+				"http://LISTING-SERVICE/listings/joinerPaid/"+productId+"/"+userId,
+				request,
+				Listing.class);
+	}
+	
+	public void joinerReceived(long productId, long userId) {
+		log.info("Inside joinerReceived method of PortalApiService");
+log.info("HEE joinerReceived: "+productId + " : "+userId);	
+		
+		String listingRequest ="";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		try{
+		//ObjectMapper objectMapper = new ObjectMapper();		
+		//listingRequest = objectMapper.writeValueAsString(listingDetails);
+		}
+		catch(Exception e){
+			log.info("fail Request: "+ listingRequest);
+		}
+		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+				
+		log.info("Request: "+ request);
+		
+		restTemplate.postForObject(
+				"http://LISTING-SERVICE/listings/joinerReceived/"+productId+"/"+userId,
+				request,
+				Listing.class);
 	}
 	
 	public User logInViaGoogle(@RequestBody User user) {
