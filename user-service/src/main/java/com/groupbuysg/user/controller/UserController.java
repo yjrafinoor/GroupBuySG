@@ -76,10 +76,15 @@ public class UserController {
 	
 	@GetMapping("/findByUserName/{uid}")
 	public User findByUserName(@PathVariable("uid") String userName){
-		log.info("Inside deleteUserById method of UserController");
+		log.info("Inside findByUserName method of UserController");
 		return userService.findByUserName(userName);
 	}
-	
+
+	@GetMapping("/findByEmail/{email}")
+	public User findByEmail(@PathVariable("email") String email){
+		log.info("Inside findByEmail method of UserController");
+		return userService.findByEmail(email);
+	}
 
     @GetMapping("/health")
 	public ResponseEntity<?> healthCheck()	{

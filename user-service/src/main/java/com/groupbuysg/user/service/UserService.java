@@ -132,7 +132,10 @@ log.info("Hee reviewLeader: "+userId +" : "+code);
 		log.info("Inside findByUserName method of UserService");
 		return userRepository.findByUserName(userName);
 	}
-	
+	public User findByEmail(String email) {
+		log.info("Inside findByEmail method of UserService");
+		return userRepository.findByEmail(email);
+	}
 /*	
 	public User deleteUserById(long userId) {
 		log.info("Inside deleteUserbyId method of UserService");
