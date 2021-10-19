@@ -50,6 +50,12 @@ public class ListingController {
 		return listingService.createLeader(listing, productId, userId);
 	}
 	
+	@GetMapping("/getJoiner/{pid}/{uid}")
+	public Listing getJoiner (@PathVariable("pid") long productId, @PathVariable("uid") long userId){
+		log.info("Inside getJoiner method of LisintgController");
+		return listingService.getJoiner(productId, userId);
+	}
+	
 	@PostMapping("/createJoiner/{pid}/{uid}")
 	public Listing createJoiner (@RequestBody Listing listing, @PathVariable("pid") long productId, @PathVariable("uid") long userId){
 		log.info("Inside createJoiner method of LisintgController");

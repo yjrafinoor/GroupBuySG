@@ -191,6 +191,16 @@ log.info("HEE requestLeaderService: "+userId);
 		return Arrays.asList(productResponse);
 	}
 	
+	public List<Listing> getListingByUser(long userId) {
+		log.info("Inside getListingByUser method of PortalApiService");
+
+		Listing[] listingResponse =  restTemplate.getForObject("http://LISTING-SERVICE/listings/listUser/"+userId
+				, Listing[].class);
+		
+		log.info(String.valueOf(listingResponse.length));
+		return Arrays.asList(listingResponse);
+	}
+	
 	public List<Product> getProductListOpen(){
 		log.info("Inside getProductListOpen method of PortalApiService");
 		
@@ -303,6 +313,16 @@ log.info("HEE requestLeaderService: "+userId);
 				User.class);
 	}
 	
+	public Listing getJoiner(long productId, long userId){
+		log.info("Inside getJoiner method of PortalApiService");
+		Listing joinerResponse = new Listing();
+		joinerResponse =  restTemplate.getForObject("http://LISTING-SERVICE/listings/getJoiner/"+productId+"/"+userId
+				, Listing.class);
+log.info("Hee getJoinersLServives: "+joinerResponse);		
+		return joinerResponse;
+
+	}
+	
 	public List<Listing> getJoiners(long productId){
 		log.info("Inside getJoiners method of PortalApiService");
 		Listing[] joinersResponse =  restTemplate.getForObject("http://LISTING-SERVICE/listings/getJoiners/"+productId
@@ -335,7 +355,7 @@ log.info("Hee getJoinersLServives: "+joinersResponse);
 	}
 	
 	
-	public void leaderConfirm(Listing listingDetails, long productId) {
+	public Listing leaderConfirm(Listing listingDetails, long productId) {
 		log.info("Inside leaderConfirm method of PortalApiService");
 log.info("HEE leaderConfrimService: "+productId + " : "+ listingDetails);	
 		
@@ -354,13 +374,13 @@ log.info("HEE leaderConfrimService: "+productId + " : "+ listingDetails);
 				
 		log.info("Request: "+ request);
 		
-		restTemplate.postForObject(
+		return restTemplate.postForObject(
 				"http://LISTING-SERVICE/listings/leaderCloseItem/"+productId,
 				request,
-				Product.class);
+				Listing.class);
 	}
 	
-	public void adminUpdate(long productId, int adminCode) {
+	public Listing adminUpdate(long productId, int adminCode) {
 		log.info("Inside adminUpdate method of PortalApiService");
 log.info("HEE adminUpdateService: "+productId + " : "+adminCode);	
 		
@@ -379,13 +399,13 @@ log.info("HEE adminUpdateService: "+productId + " : "+adminCode);
 				
 		log.info("Request: "+ request);
 		
-		restTemplate.postForObject(
+		return restTemplate.postForObject(
 				"http://LISTING-SERVICE/listings/updateAdmin/"+productId+"/"+adminCode,
 				request,
 				Listing.class);
 	}
 	
-	public void leaderUpdate(long productId, int leaderCode) {
+	public Listing leaderUpdate(long productId, int leaderCode) {
 		log.info("Inside leaderUpdate method of PortalApiService");
 log.info("HEE leaderUpdateService: "+productId + " : "+leaderCode);	
 		
@@ -404,7 +424,7 @@ log.info("HEE leaderUpdateService: "+productId + " : "+leaderCode);
 				
 		log.info("Request: "+ request);
 		
-		restTemplate.postForObject(
+		return restTemplate.postForObject(
 				"http://LISTING-SERVICE/listings/updateLeader/"+productId+"/"+leaderCode,
 				request,
 				Listing.class);
@@ -536,6 +556,7 @@ log.info("HEE joinerReceived: "+productId + " : "+userId);
 				Listing.class);
 	}
 	
+	/*
 	public User logInViaGoogle(@RequestBody User user) {
 
 		// TODO : issue unable to respond to output value of this function from frontend
@@ -551,7 +572,7 @@ log.info("HEE joinerReceived: "+productId + " : "+userId);
 				return userResponse[i];
 
 		return null;//new User();
-	}
+	}*/
 	
 	public User verifiedLogin(String userName, String password) {
 		log.info("Inside verifiedLogin method of PortalApiService");

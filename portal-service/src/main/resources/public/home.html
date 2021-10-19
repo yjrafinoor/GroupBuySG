@@ -42,15 +42,19 @@
 							<p class="card-text small text-muted">
 								Create On: <small class="text-muted" th:text="${product.createdDate}"></small> <br>
 								Due Date : <small class="text-muted" th:text="${product.dueDate}"></small>
-								<div th:unless="${product.userId} eq ${session.user['userId']}" >
+								<div th:unless="${product.userId} eq ${session.user['userId']} or ${session.user['role']} eq 'ADMIN'" >
 									<a th:if="${product.status} eq 'OPEN'" 
-										th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+										th:href="@{/join/{pid}/{uid} (pid=${product.productId}, uid=${session.user['userId']})}" class="btn btn-primary" style="float: right;">Join</a>
+								</div>
+								<div th:if="${session.user['role']} eq 'ADMIN'" >
+									<a th:if="${product.status} eq 'OPEN'" 
+										th:href="@{/join/{pid}/{uid} (pid=${product.productId}, uid=${session.user['userId']})}" class="btn btn-primary" style="float: right;">View</a>
 								</div>
 								<div th:if="${product.userId} eq ${session.user['userId']}" >
 									<a th:if="${product.status} eq 'OPEN'" 
 										th:href="@{/editProduct/{id}(id=${product.productId})}" class="btn btn-outline-success" style="float: right;">Edit</a>
 									<a th:if="${product.status} eq 'OPEN'" 
-										th:href="@{/join/{id} (id=${product.productId})}" class="btn btn-primary" style="float: right;">View</a>
+										th:href="@{/join/{pid}/{uid} (pid=${product.productId}, uid=${session.user['userId']})}" class="btn btn-primary" style="float: right;">View</a>
 								</div>
 							</p>
 						  </div>
@@ -87,11 +91,11 @@
 								Create On: <small class="text-muted" th:text="${productP.createdDate}"></small> <br>
 								Due Date : <small class="text-muted" th:text="${productP.dueDate}"></small>
 								<a th:if="${productP.status} eq 'OPEN'" 
-									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+									th:href="@{/join/{pid}/{uid} (pid=${productP.productId}, uid=${session.user['userId']})}" class="btn btn-primary" style="float: right;">Join</a>
 								<a th:if="${productP.status} eq 'IN PROGRESS'" 
-									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-warning" style="float: right;">View</a>
+									th:href="@{/join/{pid}/{uid} (pid=${productP.productId}, uid=${session.user['userId']})}" class="btn btn-warning" style="float: right;">View</a>
 								<a th:if="${productP.status} eq 'CLOSED'" 
-									th:href="@{/join/{id} (id=${productP.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
+									th:href="@{/join/{pid}/{uid} (pid=${productP.productId}, uid=${session.user['userId']})}" class="btn btn-secondary" style="float: right;">View</a></p>
 						  </div>
 						</div>
 					  </div>
@@ -126,11 +130,11 @@
 								Create On: <small class="text-muted" th:text="${productC.createdDate}"></small> <br>
 								Due Date : <small class="text-muted" th:text="${productC.dueDate}"></small>
 								<a th:if="${productC.status} eq 'OPEN'" 
-									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-primary" style="float: right;">Join</a>
+									th:href="@{/join/{pid}/{uid} (pid=${productC.productId}, uid=${session.user['userId']})}" class="btn btn-primary" style="float: right;">Join</a>
 								<a th:if="${productC.status} eq 'IN PROGRESS'" 
-									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-warning" style="float: right;">View</a>
+									th:href="@{/join/{pid}/{uid} (pid=${productC.productId}, uid=${session.user['userId']})}" class="btn btn-warning" style="float: right;">View</a>
 								<a th:if="${productC.status} eq 'CLOSED'" 
-									th:href="@{/join/{id} (id=${productC.productId})}" class="btn btn-secondary" style="float: right;">View</a></p>
+									th:href="@{/join/{pid}/{uid} (pid=${productC.productId}, uid=${session.user['userId']})}" class="btn btn-secondary" style="float: right;">View</a></p>
 						  </div>
 						</div>
 					  </div>

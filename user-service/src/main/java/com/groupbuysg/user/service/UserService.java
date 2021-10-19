@@ -89,7 +89,7 @@ public class UserService {
 		user.setPaynowName	(userDetails.getPaynowName());
 		user.setPaynowMobile(userDetails.getPaynowMobile());
 		user.setDateRegister(user.getDateRegister());
-		user.setRequestLeader(userDetails.getRequestLeader());
+		user.setRequestLeader(user.getRequestLeader());
 		user.setDateBeLeader(userDetails.getDateBeLeader());
 		user.setIsActive(user.getIsActive());
 		return userRepository.save(user);

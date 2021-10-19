@@ -13,7 +13,7 @@
 	</section>
 		</p>
 		<div class="container">
-            <section id="user_list">		
+            <section id="listing_list">		
 				<div class="e-table">
 				  <div class="table-responsive table-lg mt-3">
 					<table class="table table-bordered">
@@ -25,31 +25,41 @@
 							  <label class="custom-control-label" for="all-items"></label>
 							</div>
 						  </th>
-						  <th>ID</th>
-						  <th>PRODUCT</th>
-						  <th class="max-width">LEADER ID</th>
-						  <th class="max-width">STATUS</th>
-						  <th class="max-width">CATEGRORY</th>
+						  <th>PRODUCT ID</th>
+						  <th class="max-width">DATE</th>
+						  <th class="max-width" th:unless="${session.user['role']} eq 'ADMIN'">QUANTITY</th>
+						  <th class="max-width">AMOUNT</th>
+						  <th class="max-width" th:if="${session.user['role']} eq 'LEADER'">LEADER STATUS</th>
+						  <th class="max-width" th:if="${session.user['role']} eq 'ADMIN'">ADMIN STATUS</th>
+						  <th class="max-width" th:unless="${session.user['role']} eq 'ADMIN'" >JOINER STATUS</th>
 						  <th class="max-width">ACTION</th>
 						</tr>
 					  </thead>
 					  <tbody>
-						<tr th:each="product : ${listProducts}">
+						<tr th:each="list : ${listListings}">
 						  <td class="align-middle">
 							<div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0 align-top">
 							  <input type="checkbox" class="custom-control-input" id="item-1">
 							  <label class="custom-control-label" for="item-1"></label>
 							</div>
 						  </td>
-						  <td class="text-nowrap align-middle" th:text="${product.productId}"></td>
-						  <td class="text-nowrap align-middle" th:text="${product.productName}"></td>
-						  <td class="text-nowrap align-middle" th:text="${product.userId}"></td>
-						  <td class="text-nowrap align-middle" th:text="${product.status}"></td>
-						  <td class="text-nowrap align-middle" th:text="${product.category}"></td>
+						  <td class="text-nowrap align-middle" th:text="${list.productId}"></td>
+						  <td class="text-nowrap align-middle" th:text="${list.DateJoin}"></td>
+						  <td class="text-nowrap align-middle" th:unless="${session.user['role']} eq 'ADMIN'" th:text="${list.totalQuantity}"></td>
+						  <td class="text-nowrap align-middle" th:text="${list.totalAmount}"></td>
+						 <td class="text-nowrap align-middle"  th:if="${session.user['role']} eq 'LEADER'">
+						 	<span class="badge badge-pill badge-info" th:text="${list.statusLeader}"></span>
+						 </td>
+						  <td class="text-nowrap align-middle" th:if="${session.user['role']} eq 'ADMIN'">
+						 	<span class="badge badge-pill badge-info" th:text="${list.statusAdmin}"></span>
+						 </td>
+						  <td class="text-nowrap align-middle" th:unless="${session.user['role']} eq 'ADMIN'">
+						 	<span class="badge badge-pill badge-info" th:text="${list.statusJoiner}"></span>
+						 </td>
 						  <td class="text-center align-middle">
 							<div class="btn-group align-top">
-								<a type="button" class="btn btn-outline-success" style="float: left;" th:href="@{/editProduct/{id}(id=${product.productId})}">Edit</a>
-								<a type="button" class="btn btn-outline-danger" style="float: right;" th:href="@{/deleteProduct/{id}(id=${product.productId})}">Delete</a>
+								<a type="button" class="btn btn-outline-success" style="float: left;" 
+									th:href="@{/join/{pid}/{uid} (pid=${list.productId}, uid=${session.user['userId']})}">Details</a>
 							</div>
 						  </td>
 						</tr>

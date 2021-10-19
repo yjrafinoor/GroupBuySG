@@ -80,10 +80,11 @@ public class ListingService {
 		int leaderQty = 0;
 		
 		leader = getLeader(productId);
+log.info("Hee11 getLeader: "+leader);
 		leaderQty=leader.getTotalQuantity();
 		
 		Listing joinerDetails = getListingJoiner(productId, userId);
-		
+log.info("Hee11 joinerDetails: "+joinerDetails);		
 		if(joinerDetails.getUserId()!=0L && joinerDetails.getUserId()==userId) {
 			log.info("Hee joinerDetails!=null: "+joinerDetails);
 			
@@ -103,6 +104,8 @@ public class ListingService {
 			listingRepository.save(listing);
 			leaderQty+=qty;
 		}
+log.info("Hee11 createJoinerlisting: "+listing);
+log.info("Hee11 createJoinerjoinerDetails: "+joinerDetails);
 
 		leader.setTotalQuantity(leaderQty);
 		listingRepository.save(leader);
@@ -168,7 +171,7 @@ public class ListingService {
 		if(listings.size()>0) {
 			for(int i=0; i<listings.size(); i++) {
 				if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=false) {
-					leader = listings.get(i);
+					return listings.get(i);
 				}
 			}
 		}
@@ -199,6 +202,25 @@ public class ListingService {
 		return admin;
 	}
 	
+	public Listing getJoiner (long productId, long userId) {
+		log.info("Inside getJoiner method of ListingService");
+		Listing joiner = new Listing();
+
+		//Start: get leader
+		List<Listing> listings = listingRepository.findByProductId(productId);
+		if(listings.size()>0) {
+			for(int i=0; i<listings.size(); i++) {
+				if(listings.get(i).getUserId()==userId) {
+					//if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true) {
+						joiner = listings.get(i);
+						log.info("Hee getJoiner: "+ joiner);
+					//}
+				}
+			}
+		}
+		return joiner;
+	}
+	
 	public Listing getListingAdmin (long productId) {
 		log.info("Inside getListingAdmin method of ListingService");
 		Listing admin = new Listing();
@@ -216,16 +238,24 @@ public class ListingService {
 	public Listing getListingJoiner (long productId, long userId) {
 		log.info("Inside getListingJoiner method of ListingService");
 		Listing joiner = new Listing();
+		Listing leader = getLeader(productId);
+		Listing admin = getAdmin(productId);
+log.info("Hee11 getListingJoinerleader: "+leader);
+log.info("Hee11 getListingJoineradmin: "+admin);
 		//Start: get Joiners
 		List<Listing> listings = listingRepository.findByProductId(productId);
+log.info("Hee11 getListingJoinerlistings: "+listings);
 		if(listings.size()>0) {
 			for(int i=0; i<listings.size(); i++) {
-				if((listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true)
-						&& (listings.get(i).getUserId()==userId)) {
+				//if((listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true)
+				//		&& (listings.get(i).getUserId()==userId)) {
+				if(listings.get(i).getUserId() != leader.getUserId() && listings.get(i).getUserId() != admin.getUserId()
+					&&	listings.get(i).getUserId()==userId) {
 					joiner = listings.get(i);
 				}
 			}
 		}
+log.info("Hee11 getListingJoiner: "+joiner);
 		return joiner;
 	}
 	
@@ -233,11 +263,15 @@ public class ListingService {
 		log.info("Inside getListingJoiners method of ListingService");
 		List<Listing> joiners = new ArrayList<>();
 		
+		Listing leader = getLeader(productId);
+		Listing admin = getAdmin(productId);
+		
 		//Start: get Joiners
 		List<Listing> listings = listingRepository.findByProductId(productId);
 		if(listings.size()>0) {
 			for(int i=0; i<listings.size(); i++) {
-				if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true) {
+				//if(listings.get(i).getIsLeader()!=null && listings.get(i).getIsLeader()!=true) {
+				if(listings.get(i).getUserId() != leader.getUserId() && listings.get(i).getUserId() != admin.getUserId()) {
 					joiners.add(listings.get(i));
 log.info("Hee getListingJoiners1: "+listings.get(i));
 				}
@@ -283,6 +317,10 @@ log.info("Hee getListingJoiners1: "+listings.get(i));
 	public void updateJoinerStatus(long productId, double unitAmt, int code) {
 		log.info("Inside updateJoinerStatus method of ListingService");	
 		List<Listing> allJoiners = listingRepository.findByProductId(productId);
+		
+		Listing leader = getLeader(productId);
+		Listing admin = getAdmin(productId);
+		
 log.info("Hee allJoiners.size(): "+allJoiners.size());
 		int countJoiners = allJoiners.size()-2;
 		int countPAID=0;
@@ -295,7 +333,8 @@ log.info("Hee allJoiners.size(): "+allJoiners.size());
 				int joinerQty = 0;
 				Double joinerPrice = 0.00;
 								
-				if(allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true) {
+				//if(allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true) {
+				if(allJoiners.get(i).getUserId() != leader.getUserId() && allJoiners.get(i).getUserId() != admin.getUserId()) {
 					
 					if(code==1) {
 						updateAdmin(productId, 1); //adminCode 1: PENDING JOINERs PAYMENT
@@ -358,11 +397,15 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		log.info("Inside joinerPaid method of ListingService");
 		Listing joiner = new Listing();
 		List<Listing> allJoiners = listingRepository.findByUserId(userId);
+		Listing leader = getLeader(productId);
+		Listing admin = getAdmin(productId);
+		
 		if(allJoiners.size()>0) {
 			for(int i=0; i<allJoiners.size(); i++) {
 								
 				if(allJoiners.get(i).getProductId()==productId 
-					&& (allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true)) {
+					//&& (allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true)
+					&& allJoiners.get(i).getUserId() != leader.getUserId() && allJoiners.get(i).getUserId() != admin.getUserId()) {
 					
 					joiner = allJoiners.get(i);
 					joiner.setStatusJoiner("PAID");
@@ -404,7 +447,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		}
 		if(adminCode==3) {
 			admin.setStatusAdmin("RELEASED 10% TO LEADER");
-			admin.setDateAmount90(getCurrentDate());
+			admin.setDateAmount10(getCurrentDate());
 			listingRepository.save(admin);
 			updateLeader(productId, 2);
 		}
@@ -477,6 +520,7 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 log.info("Hee leaderCode==7: "+productId);
 			leader.setStatusLeader("COMPLETED PASS TO ALL JOINERs");
 log.info("Hee leader leader1: "+leader);
+			leader.setDateLeaderPassOver(getCurrentDate());
 			listingRepository.save(leader);
 log.info("Hee leader leader2: "+leader);			
 		}
@@ -522,11 +566,16 @@ log.info("Hee leader leader2: "+leader);
 		log.info("Inside joinerReceived method of ListingService");
 		Listing joiner = new Listing();
 		List<Listing> allJoiners = listingRepository.findByUserId(userId);
+		Listing leader = getLeader(productId);
+		Listing admin = getAdmin(productId);
+		
 		if(allJoiners.size()>0) {
 			for(int i=0; i<allJoiners.size(); i++) {
 								
 				if(allJoiners.get(i).getProductId()==productId 
-					&& (allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true)) {
+					//&& (allJoiners.get(i).getIsLeader()!=null && allJoiners.get(i).getIsLeader()!=true)
+					&& allJoiners.get(i).getUserId() != leader.getUserId() 
+					&& allJoiners.get(i).getUserId() != admin.getUserId()) {
 					
 					joiner = allJoiners.get(i);
 					joiner.setStatusJoiner("RECEIVED");

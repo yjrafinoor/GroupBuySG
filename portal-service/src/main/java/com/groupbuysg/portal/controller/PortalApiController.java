@@ -32,6 +32,7 @@ public class PortalApiController {
 	@Autowired
 	PortalApiService portalApiService;
 	
+	/*
 	@RequestMapping(value = "/logInViaGoogle", method = RequestMethod.POST)
 	public ModelAndView logInViaGoogle (@ModelAttribute User user, Model model){
 		log.info("Inside logInViaGoogle method of PortalApiController");
@@ -60,9 +61,9 @@ public class PortalApiController {
 		
 		return modelAndView;
 		
-	}
+	}*/
 	
-	@RequestMapping("/heeLogin")
+	@RequestMapping("/login")
 	public ModelAndView heeLogin (@ModelAttribute User user, Model model, HttpSession session){
 		log.info("Inside heeLogin method of PortalApiController");
 		log.info("Hee heeLogin: "+user+" ;m: "+model+" ;s: "+session);	
@@ -95,7 +96,7 @@ public class PortalApiController {
 		return modelAndView;
 	}
 	
-	@RequestMapping("/heeLogout")
+	@RequestMapping("/logout")
 	public ModelAndView heeLogout (Model model, HttpSession session){
 		log.info("Inside heeLogout method of PortalApiController");
 
@@ -143,20 +144,27 @@ log.info("Hee OPEN: "+listProductsClose);
 	}
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute User user, Model model)
-	{
-		
+	public ModelAndView save(@ModelAttribute User user, Model model, HttpSession session) {
+		log.info("Inside save method of PortalApiController");
 		portalApiService.saveUser(user);
-		/*
-		 * Here you can write the code to save the user information in database
-		 */
+		
+		User userInfo = portalApiService.verifiedLogin(user.getUserName(), user.getPassword());
+		
+		List<Product> listProductsOpen =portalApiService.getProductListOpen();
+		model.addAttribute("listProductsOpen",listProductsOpen);
+log.info("Hee OPEN: "+listProductsOpen);
+		List<Product> listProductsProgress =portalApiService.getProductListProgess();
+		model.addAttribute("listProductsProgress",listProductsProgress);
+log.info("Hee OPEN: "+listProductsProgress);
+		List<Product> listProductsClose =portalApiService.getProductListClose();
+		model.addAttribute("listProductsClose",listProductsClose);
+log.info("Hee OPEN: "+listProductsClose);
+
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("home");
-		List<User> listUsers =portalApiService.getUserList();
-		modelAndView.addObject("listUsers",listUsers);
 		
 		model.addAttribute("successMessage", "Sigup Successful");
-		
+		session.setAttribute("user", userInfo);
 
 		return modelAndView;
 	}
@@ -312,6 +320,15 @@ log.info("HEE1 newProduct: "+newProduct);
 		return "product_list";
 	}
 	
+	@RequestMapping("/join_list/{uid}")
+	public String listingpage (Model model, @PathVariable("uid") long userId){
+		log.info("Inside listingpage method of PortalApiController");
+		List<Listing> listListings =portalApiService.getListingByUser(userId);
+		model.addAttribute("listListings",listListings);
+		
+		return "join_list";
+	}
+	
 	@RequestMapping(path = {"/editProduct/{id}"})
     public String editProductPage(Model model, @PathVariable("id") long productId) {
 		log.info("Inside editProductPage method of PortalApiController");
@@ -372,8 +389,8 @@ log.info("HEE product: "+productDetails +" : "+productId);
         return modelAndView;
     }
 
-	@RequestMapping("/join/{pid}")	
-	public ModelAndView joinPage (@PathVariable("pid") long productId, Model model){
+	@RequestMapping("/join/{pid}/{uid}")	
+	public ModelAndView joinPage (@PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
 		log.info("Inside joinPage method of PortalApiController");
 	
 		Product product = portalApiService.getProductById(productId);
@@ -384,12 +401,19 @@ log.info("HEE product: "+product);
 	
 		User leaderDetails = portalApiService.getUserDetails(leader.getUserId());
 		model.addAttribute("leaderDetails",leaderDetails);
+log.info("HEE leaderDetails: "+leaderDetails);	
 		
 		Listing admin = portalApiService.getAdmin(productId);
 		model.addAttribute("admin",admin);
 
 		User adminDetails = portalApiService.getUserDetails(admin.getUserId());
 		model.addAttribute("adminDetails",adminDetails);
+		
+		Listing joiner = portalApiService.getJoiner(productId, userId);
+		model.addAttribute("joiner",joiner);
+		
+		User joinerDetails = portalApiService.getUserDetails(userId);
+		model.addAttribute("joinerDetails",joinerDetails);
 		
 		List<Listing> allJoiners = portalApiService.getJoiners(productId);
 		model.addAttribute("allJoiners",allJoiners);
@@ -412,9 +436,9 @@ log.info("HEE allJoiners: "+allJoiners);
 		log.info("Inside leaderConfirm method of PortalApiController");
 		
 log.info("HEE leaderConfirm: "+productId +" : "+listingDetails);				
-		portalApiService.leaderConfirm(listingDetails, productId);
+		Listing listing = portalApiService.leaderConfirm(listingDetails, productId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
 	@RequestMapping(value = "/adminRelease10/{id}", method = RequestMethod.POST)
@@ -422,9 +446,9 @@ log.info("HEE leaderConfirm: "+productId +" : "+listingDetails);
 		log.info("Inside adminRelease10 method of PortalApiController");
 		
 log.info("HEE adminRelease10: "+productId);				
-		portalApiService.adminUpdate(productId, 3);
+		Listing listing = portalApiService.adminUpdate(productId, 3);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
 	@RequestMapping(value = "/leaderReceived10/{id}", method = RequestMethod.POST)
@@ -432,9 +456,9 @@ log.info("HEE adminRelease10: "+productId);
 		log.info("Inside leaderReceived10 method of PortalApiController");
 		
 log.info("HEE adminRelease10: "+productId);				
-		portalApiService.leaderUpdate(productId, 3);
+		Listing listing = portalApiService.leaderUpdate(productId, 3);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 
 	@RequestMapping(value = "/leaderProceedOrder/{id}", method = RequestMethod.POST)
@@ -442,9 +466,9 @@ log.info("HEE adminRelease10: "+productId);
 		log.info("Inside leaderProceedOrder method of PortalApiController");
 		
 log.info("HEE leaderProceedOrder: "+productId);				
-		portalApiService.leaderUpdate(productId, 4);
+		Listing listing = portalApiService.leaderUpdate(productId, 4);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
 	@RequestMapping(value = "/leaderReceivedParcel/{id}", method = RequestMethod.POST)
@@ -452,9 +476,9 @@ log.info("HEE leaderProceedOrder: "+productId);
 		log.info("Inside leaderReceivedParcel method of PortalApiController");
 		
 log.info("HEE leaderReceivedParcel: "+productId);				
-		portalApiService.leaderUpdate(productId, 5);
+		Listing listing = portalApiService.leaderUpdate(productId, 5);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
 	@RequestMapping(value = "/adminRelease90/{id}", method = RequestMethod.POST)
@@ -462,9 +486,9 @@ log.info("HEE leaderReceivedParcel: "+productId);
 		log.info("Inside adminRelease10 method of PortalApiController");
 		
 log.info("HEE adminRelease90: "+productId);				
-		portalApiService.adminUpdate(productId, 7);
+		Listing listing = portalApiService.adminUpdate(productId, 7);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
 	@RequestMapping(value = "/passToJoiner/{pid}/{uid}", method = RequestMethod.POST)
@@ -474,7 +498,7 @@ log.info("HEE adminRelease90: "+productId);
 log.info("HEE passToJoiner: "+productId);				
 		portalApiService.passToJoiner(productId, userId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+userId);
 	}
 	
 	@RequestMapping(value = "/leaderReceived90/{id}", method = RequestMethod.POST)
@@ -482,9 +506,9 @@ log.info("HEE passToJoiner: "+productId);
 		log.info("Inside leaderReceived90 method of PortalApiController");
 		
 log.info("HEE leaderReceived90: "+productId);				
-		portalApiService.leaderUpdate(productId, 10);
+		Listing listing = portalApiService.leaderUpdate(productId, 10);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 
 	@RequestMapping(value = "/postComment/{pid}/{uid}", method = RequestMethod.POST)
@@ -494,45 +518,39 @@ log.info("HEE leaderReceived90: "+productId);
 log.info("HEE postComment: "+productId);				
 		portalApiService.postComment(comment, productId, userId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+userId);
 	}
 	
 	
-	@RequestMapping(value = "/joinProduct/{pid}", method = RequestMethod.POST)
-	public RedirectView joinProduct(@ModelAttribute Listing listing, @PathVariable("pid") long productId, Model model){
+	@RequestMapping(value = "/joinProduct/{pid}/{uid}", method = RequestMethod.POST)
+	public RedirectView joinProduct(@ModelAttribute Listing listing, @PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
 		log.info("Inside joinProduct method of PortalApiController");
-		
-		long userId = 3;
 		
 log.info("HEE postComment: "+productId);				
 		portalApiService.joinProduct(listing, productId, userId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+userId);
 	}
 	
 	
-	@RequestMapping(value = "/joinerPay/{pid}", method = RequestMethod.POST)
-	public RedirectView joinerPay(@PathVariable("pid") long productId, Model model){
+	@RequestMapping(value = "/joinerPay/{pid}/{uid}", method = RequestMethod.POST)
+	public RedirectView joinerPay(@PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
 		log.info("Inside joinerPay method of PortalApiController");
-		
-		long userId = 3;
 		
 log.info("HEE joinerPay: "+productId);				
 		portalApiService.joinerPay(productId, userId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+userId);
 	}
 	
-	@RequestMapping(value = "/joinerReceived/{pid}", method = RequestMethod.POST)
-	public RedirectView joinerReceived(@PathVariable("pid") long productId, Model model){
+	@RequestMapping(value = "/joinerReceived/{pid}/{uid}", method = RequestMethod.POST)
+	public RedirectView joinerReceived(@PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
 		log.info("Inside joinerReceived method of PortalApiController");
-		
-		long userId = 3;
 		
 log.info("HEE joinerReceived: "+productId);				
 		portalApiService.joinerReceived(productId, userId);
 
-		return new RedirectView("/join/"+productId);
+		return new RedirectView("/join/"+productId+"/"+userId);
 	}
 	
 }
