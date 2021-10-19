@@ -55,7 +55,7 @@
 			</div>--> 
 		</nav>
 		<!-- Check if errorMessage is not null and not empty -->       
-        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="alert alert-success" role="alert" />
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="alert alert-danger" role="alert" />
         <div th:if="${successMessage}" th:utext="${successMessage}" class="alert alert-success" role="alert" /> 
 	</div>
 </div>
