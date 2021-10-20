@@ -76,7 +76,7 @@ public class UserController {
 	
 	@GetMapping("/findByUserName/{uid}")
 	public User findByUserName(@PathVariable("uid") String userName){
-		log.info("Inside deleteUserById method of UserController");
+		log.info("Inside findByUserName method of UserController");
 		return userService.findByUserName(userName);
 	}
 	
