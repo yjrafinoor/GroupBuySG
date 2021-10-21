@@ -222,7 +222,7 @@ log.info("HEE updateUser: "+userDetails +" : "+userId);
 		model.addAttribute("successMessage", "Delete Successful");
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("user_list");
+		modelAndView.setViewName("product_list");
 				
 		return modelAndView;
     }
