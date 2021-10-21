@@ -75,7 +75,7 @@ public class PortalApiService {
 		catch(Exception e){
 			log.info("fail Request: "+ userRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(userRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(userRequest,headers);
 				
 		log.info("Request: "+ request);
 
@@ -107,7 +107,7 @@ public class PortalApiService {
 		catch(Exception e){
 			log.info("fail Request: "+ userRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(userRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(userRequest,headers);
 				
 		log.info("Request: "+ request);
 
@@ -138,7 +138,7 @@ log.info("HEE requestLeaderService: "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ userRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(userRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(userRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -162,7 +162,7 @@ log.info("HEE requestLeaderService: "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ userRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(userRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(userRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -244,7 +244,7 @@ log.info("HEE requestLeaderService: "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ produtRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(produtRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(produtRequest,headers);
 				
 		log.info("Request: "+ request);
 
@@ -268,7 +268,7 @@ log.info("HEE requestLeaderService: "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ produtRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(produtRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(produtRequest,headers);
 				
 		log.info("Request: "+ request);
 
@@ -370,7 +370,7 @@ log.info("HEE leaderConfrimService: "+productId + " : "+ listingDetails);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -395,7 +395,7 @@ log.info("HEE adminUpdateService: "+productId + " : "+adminCode);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -420,7 +420,7 @@ log.info("HEE leaderUpdateService: "+productId + " : "+leaderCode);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -445,7 +445,7 @@ log.info("HEE passToJoinerService: "+productId + " : "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -471,7 +471,7 @@ log.info("HEE postCommentService: "+productId + " : "+userId);
 			log.info("fail Request: "+ commentRequest);
 			
 		}
-		HttpEntity<String> request = new HttpEntity<>(commentRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(commentRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -496,7 +496,7 @@ log.info("HEE postCommentService: "+productId + " : "+userId);
 			log.info("fail Request: "+ joinRequest);
 			
 		}
-		HttpEntity<String> request = new HttpEntity<>(joinRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(joinRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -521,7 +521,7 @@ log.info("HEE joinerPay: "+productId + " : "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		
@@ -546,7 +546,7 @@ log.info("HEE joinerReceived: "+productId + " : "+userId);
 		catch(Exception e){
 			log.info("fail Request: "+ listingRequest);
 		}
-		HttpEntity<String> request = new HttpEntity<>(listingRequest,headers);
+		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
 				
 		log.info("Request: "+ request);
 		

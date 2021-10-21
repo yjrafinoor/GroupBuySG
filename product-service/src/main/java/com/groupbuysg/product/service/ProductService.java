@@ -37,7 +37,7 @@ public class ProductService {
 		log.info("Inside itemsListOpen method of ProductService");
 		
 		List<Product> products = productRepository.findAll();
-		List<Product> productsOpen = new ArrayList<>();
+		List<Product> productsOpen = new ArrayList<Product>();
 		
 		if(products.size()>0) {
 			for(int i=0;i<products.size();i++) {
@@ -52,7 +52,7 @@ public class ProductService {
 	public List<Product> itemsListProgress(){
 		log.info("Inside itemsListProgress method of ProductService");
 		List<Product> products = productRepository.findAll();
-		List<Product> productsProgress = new ArrayList<>();
+		List<Product> productsProgress = new ArrayList<Product>();
 		
 		if(products.size()>0) {
 			for(int i=0;i<products.size();i++) {
@@ -67,7 +67,7 @@ public class ProductService {
 	public List<Product> itemsListClose(){
 		log.info("Inside itemsListClose method of ProductService");
 		List<Product> products = productRepository.findAll();
-		List<Product> productsClosed = new ArrayList<>();
+		List<Product> productsClosed = new ArrayList<Product>();
 		
 		if(products.size()>0) {
 			for(int i=0;i<products.size();i++) {

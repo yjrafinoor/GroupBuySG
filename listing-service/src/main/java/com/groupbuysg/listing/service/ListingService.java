@@ -261,7 +261,7 @@ log.info("Hee11 getListingJoiner: "+joiner);
 	
 	public List<Listing> getListingJoiners (long productId) {
 		log.info("Inside getListingJoiners method of ListingService");
-		List<Listing> joiners = new ArrayList<>();
+		List<Listing> joiners = new ArrayList<Listing>();
 		
 		Listing leader = getLeader(productId);
 		Listing admin = getAdmin(productId);
@@ -283,7 +283,7 @@ log.info("Hee getListingJoiners1: "+listings.get(i));
 	
 	public List<Listing> getJoinersToReceive (long productId) {
 		log.info("Inside getListingJoiners method of ListingService");
-		List<Listing> joiners = new ArrayList<>();
+		List<Listing> joiners = new ArrayList<Listing>();
 
 		//Start: get Joiners
 		List<Listing> listings = getListingJoiners(productId);
