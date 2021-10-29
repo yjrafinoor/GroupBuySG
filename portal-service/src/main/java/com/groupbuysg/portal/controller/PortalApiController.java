@@ -491,14 +491,16 @@ log.info("HEE adminRelease90: "+productId);
 		return new RedirectView("/join/"+productId+"/"+listing.getUserId());
 	}
 	
-	@RequestMapping(value = "/passToJoiner/{pid}/{uid}", method = RequestMethod.POST)
-	public RedirectView passToJoiner(@PathVariable("pid") long productId, @PathVariable("uid") long userId, Model model){
+	@RequestMapping(value = "/passToJoiner/{pid}", method = RequestMethod.POST)
+	public RedirectView passToJoiner(@ModelAttribute Listing lisitng, @PathVariable("pid") long productId, Model model){
 		log.info("Inside passToJoiner method of PortalApiController");
 		
 log.info("HEE passToJoiner: "+productId);				
-		portalApiService.passToJoiner(productId, userId);
+		portalApiService.passToJoiner(lisitng, productId);
+		
+		Listing leader = portalApiService.getLeader(productId);
 
-		return new RedirectView("/join/"+productId+"/"+userId);
+		return new RedirectView("/join/"+productId+"/"+leader.getUserId());
 	}
 	
 	@RequestMapping(value = "/leaderReceived90/{id}", method = RequestMethod.POST)

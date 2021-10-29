@@ -31,6 +31,7 @@ public class Listing {
 	private String statusAdmin;
 	private Boolean isLeader;
 	private Boolean allJoinerPaid;
+	private String collectionPoint;
 	private long productId;
 	private long userId;
 }

@@ -364,7 +364,7 @@ log.info("HEE countPAID==countJoiners: "+ i + " : " +countPAID+" ; "+countJoiner
 						listingRepository.save(allJoiners.get(i));
 					}
 					if(code==4) {
-						updateLeader(productId, 6);//leaderCode 6: SCHEDULING TO MEET JOINERs
+						/*updateLeader(productId, 6);//leaderCode 6: SCHEDULING TO MEET JOINERs
 						if(allJoiners.get(i).getStatusJoiner().equals("PASS OVER")) {
 							allJoiners.get(i).setDateLeaderPassOver(getCurrentDate());
 							listingRepository.save(allJoiners.get(i));
@@ -375,7 +375,8 @@ log.info("HEE countPassOver==countJoiners: "+ i + " : " +countPassOver+" ; "+cou
 							updateAdmin(productId, 5);
 log.info("Hee updateLeader(productId, 7): "+productId);
 							updateLeader(productId, 7); //leaderCode 7: COMPLETED PASS TO ALL JOINERs
-						}
+						}*/
+						updateLeader(productId, 7); //leaderCode 7: COMPLETED PASS TO ALL JOINERs
 					}					
 					if(code==5) {
 log.info("Hee code==5: ");
@@ -518,7 +519,8 @@ log.info("Hee countReceived==countJoiners: "+i + " : " +countReceived+" ; "+coun
 		if(leaderCode==7) {
 			//AUTO STATUS
 log.info("Hee leaderCode==7: "+productId);
-			leader.setStatusLeader("COMPLETED PASS TO ALL JOINERs");
+			//leader.setStatusLeader("COMPLETED PASS TO ALL JOINERs");
+			leader.setStatusLeader("COMPLETED SENT TO CONTAINER");
 log.info("Hee leader leader1: "+leader);
 			leader.setDateLeaderPassOver(getCurrentDate());
 			listingRepository.save(leader);
@@ -550,16 +552,33 @@ log.info("Hee leader leader2: "+leader);
 		return leader;
 	}
 	
-	public Listing passedToJoiner(long productId, long userId) {
+	public Listing passedToJoiner(Listing listingDetails, long productId) {
 		log.info("Inside passedToJoiner method of ListingService");
-		Listing joiner = new Listing();
+		/*Listing joiner = new Listing();
 		joiner = getParticularJoiner(productId, userId);
 		
 		joiner.setStatusJoiner("PASS OVER");
 		listingRepository.save(joiner);
 		updateJoinerStatus(productId, 0.00, 4);
+		*/
+		Listing leader = getLeader(productId);
+		leader.setCollectionPoint(listingDetails.getCollectionPoint());
+		leader.setDateLeaderPassOver(getCurrentDate());
+		listingRepository.save(leader);
 		
-		return joiner;
+		List<Listing> allJoiners = getListingJoiners(productId);
+		
+		if(allJoiners.size()>0) {
+			for(int i=0; i<allJoiners.size(); i++) {
+				allJoiners.get(i).setCollectionPoint(listingDetails.getCollectionPoint());
+				allJoiners.get(i).setDateLeaderPassOver(getCurrentDate());
+				allJoiners.get(i).setStatusJoiner("PASS OVER");
+				listingRepository.save(allJoiners.get(i));
+				updateJoinerStatus(productId, 0.00, 4);
+			}
+		}
+		
+		return leader;
 	}
 	
 	public Listing joinerReceived(long productId, long userId) {

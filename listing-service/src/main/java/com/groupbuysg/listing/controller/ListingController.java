@@ -99,10 +99,10 @@ public class ListingController {
 		return listingService.updateLeader(productId, code);
 	}
 	
-	@PostMapping("/passedToJoiner/{pid}/{uid}")
-	public Listing passedToJoiner (@PathVariable("pid") long productId, @PathVariable("uid") long userId){
+	@PostMapping("/passedToJoiner/{pid}")
+	public Listing passedToJoiner (@RequestBody Listing listing, @PathVariable("pid") long productId){
 		log.info("Inside passedToJoiner method of LisintgController");
-		return listingService.passedToJoiner(productId, userId);
+		return listingService.passedToJoiner(listing, productId);
 	}
 	
 	@PostMapping("/joinerReceived/{pid}/{uid}")

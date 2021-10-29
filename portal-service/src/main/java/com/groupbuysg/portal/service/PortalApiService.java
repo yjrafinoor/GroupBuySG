@@ -430,29 +430,29 @@ log.info("HEE leaderUpdateService: "+productId + " : "+leaderCode);
 				Listing.class);
 	}
 	
-	public void passToJoiner(long productId, long userId) {
-		log.info("Inside leaderUpdate method of PortalApiService");
-log.info("HEE passToJoinerService: "+productId + " : "+userId);	
+	public void passToJoiner(Listing listingDetails, long productId) {
+		log.info("Inside passToJoiner method of PortalApiService");
+log.info("HEE passToJoinerService: "+productId);	
 		
 		String listingRequest ="";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		
 		try{
-		//ObjectMapper objectMapper = new ObjectMapper();		
-		//listingRequest = objectMapper.writeValueAsString(listingDetails);
-		}
-		catch(Exception e){
-			log.info("fail Request: "+ listingRequest);
-		}
-		HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
-				
-		log.info("Request: "+ request);
-		
-		restTemplate.postForObject(
-				"http://LISTING-SERVICE/listings/passedToJoiner/"+productId+"/"+userId,
-				request,
-				Listing.class);
+			ObjectMapper objectMapper = new ObjectMapper();		
+			listingRequest = objectMapper.writeValueAsString(listingDetails);
+			}
+			catch(Exception e){
+				log.info("fail Request: "+ listingRequest);
+			}
+			HttpEntity<String> request = new HttpEntity<String>(listingRequest,headers);
+					
+			log.info("Request: "+ request);
+
+			restTemplate.postForObject(
+					"http://LISTING-SERVICE/listings/passedToJoiner/"+productId,
+					request,
+					Listing.class);
 	}
 	
 	public Comment postComment(@RequestBody Comment comment, long productId, long userId) {
